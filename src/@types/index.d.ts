@@ -8,6 +8,11 @@ declare module "*.png" {
   export default value;
 }
 
+declare module "*.mp3" {
+  const value: string;
+  export default value;
+}
+
 interface IController {
   renderer: THREE.WebGLRenderer | null;
   scene: THREE.Scene | null;
@@ -31,9 +36,17 @@ interface ICelestialBody {
   tilt?: number;
   rotationPeriod?: number;
   orbitalInclination?: number;
+  retrogradeMotion?: boolean;
+  semimajorAxis?: number;
+  eccentricity?: number;
+  perihelion?: number;
+  aphelion?: number;
 }
 
 interface IOrbit {
-  radius: number;
   tilt: number;
+  semimajorAxis?: number;
+  eccentricity?: number;
+  perihelion?: number;
+  aphelion?: number;
 }

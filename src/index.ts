@@ -1,14 +1,17 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import AudioController from './controllers/audio-controller';
 
-import { planets } from './data';
+import { planets } from './classes/data';
 
-import Planet from './planet';
-import Orbit from './orbit';
-import Star from './star';
+import Planet from './classes/planet';
+import Orbit from './classes/orbit';
+import Star from './classes/star';
 
 import sunImg from './textures/sun.jpg';
 import moonImg from './textures/moon.jpg';
+import bg from './textures/milky_way.jpg';
+
 
 class Controller implements IController {
 
@@ -45,9 +48,16 @@ class Controller implements IController {
   }
 
   private initCamera() {
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 3000);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 6000);
     this.camera.position.set(0, 200, 350);
     this.camera.updateProjectionMatrix();
+  }
+
+  private initScene() {
+    this.scene = new THREE.Scene();
+    const bgTexture = new THREE.TextureLoader().load(bg);
+    bgTexture.minFilter = THREE.LinearFilter;
+    this.scene.background = bgTexture;
   }
 
   private animate() {
@@ -61,18 +71,18 @@ class Controller implements IController {
 
   public init() {
     this.initRenderer();
-    this.scene = new THREE.Scene();
+    this.initScene();
     this.initCamera();
     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
     this.orbitControls.update();
 
-    this.sun = new Star(10, 32, 32, sunImg).render();
+    this.sun = new Star(3, 32, 32, sunImg).render();
     this.scene.add(this.sun);
 
     planets.forEach((data) => {
-      const { radius, texture, distanceFromStar, orbitalPeriod, tilt, rotationPeriod, orbitalInclination } = data;
-      const planet = new Planet(radius, 32, 32, texture, distanceFromStar / this.distanceScale, orbitalPeriod, tilt, rotationPeriod, orbitalInclination);
-      const orbit = new Orbit(distanceFromStar / this.distanceScale, orbitalInclination);
+      const { radius, texture, distanceFromStar, orbitalPeriod, tilt, rotationPeriod, orbitalInclination, semimajorAxis, eccentricity, perihelion, aphelion, retrogradeMotion } = data;
+      const planet = new Planet(radius, 32, 32, texture, distanceFromStar / this.distanceScale, orbitalPeriod, tilt, rotationPeriod, orbitalInclination, retrogradeMotion, semimajorAxis / this.distanceScale, eccentricity, perihelion / this.distanceScale, aphelion / this.distanceScale);
+      const orbit = new Orbit(orbitalInclination, perihelion / this.distanceScale, aphelion / this.distanceScale, semimajorAxis / this.distanceScale, eccentricity);
       const planetModel = planet.render();
       const orbitModel = orbit.render();
       this.scene.add(planetModel);
@@ -86,6 +96,9 @@ class Controller implements IController {
 }
 
 Controller.getInstance().init();
+AudioController.getInstance().init();
+
+
 
 // Moon 
 // const moon = new Moon(1, 32, 32, moonImg, 25 / 3, 1620, 1.5, 60);
