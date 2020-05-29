@@ -14,9 +14,10 @@ abstract class CelestialBody implements ICelestialBody {
   perihelion: number;
   aphelion: number;
   moons: Array<ICelestialBody>;
+  group: string;
 
   constructor(
-    radius: number, wSegments: number, hSegments: number, 
+    group: string, radius: number, wSegments: number, hSegments: number, 
     texture: string, distanceFromStar?: number, orbitalPeriod?: number, 
     tilt?: number, rotationPeriod?: number, orbitalInclination: number = 0,
     retrogradeMotion?: boolean, semimajorAxis?: number, eccentricity?: number,
@@ -37,6 +38,7 @@ abstract class CelestialBody implements ICelestialBody {
     this.perihelion = perihelion;
     this.aphelion = aphelion;
     this.moons = moons;
+    this.group = group;
   }
 
   public animate(): void {}

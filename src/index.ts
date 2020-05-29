@@ -11,7 +11,6 @@ import Star from './classes/star';
 import sunImg from './textures/sun.jpg';
 import bg from './textures/milky_way.jpg';
 
-
 class Controller implements IController {
 
   private static instance: Controller;
@@ -47,7 +46,7 @@ class Controller implements IController {
   }
 
   private initCamera() {
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 6000);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 15000);
     this.camera.position.set(0, 200, 350);
     this.camera.updateProjectionMatrix();
   }
@@ -75,23 +74,24 @@ class Controller implements IController {
     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
     this.orbitControls.update();
 
-    this.sun = new Star(7.5, 32, 32, sunImg).render();
+    this.sun = new Star('star', 10, 32, 32, sunImg).render();
     this.scene.add(this.sun);
 
     planets.forEach((data) => {
       const { 
         radius, texture, distanceFromStar, orbitalPeriod, tilt, rotationPeriod, 
         orbitalInclination, semimajorAxis, eccentricity, perihelion, 
-        aphelion, retrogradeMotion, moons 
+        aphelion, retrogradeMotion, moons, group 
       } = data;
       
       const planet = new Planet(
-        radius, 32, 32, texture, distanceFromStar / this.distanceScale, 
+        group, radius, 32, 32, texture, distanceFromStar / this.distanceScale + 10, 
         orbitalPeriod, tilt, rotationPeriod, orbitalInclination, retrogradeMotion, 
-        semimajorAxis / this.distanceScale, eccentricity, perihelion / this.distanceScale, 
-        aphelion / this.distanceScale, moons
+        semimajorAxis / this.distanceScale + 10, eccentricity, perihelion / this.distanceScale + 10, 
+        aphelion / this.distanceScale + 10, moons
       );
-      const orbit = new Orbit(orbitalInclination, perihelion / this.distanceScale, aphelion / this.distanceScale, semimajorAxis / this.distanceScale, eccentricity);
+
+      const orbit = new Orbit(group, orbitalInclination, perihelion / this.distanceScale + 10, aphelion / this.distanceScale + 10, semimajorAxis / this.distanceScale + 10, eccentricity);
       const planetModel = planet.render();
       const orbitModel = orbit.render();
       this.scene.add(planetModel);
@@ -103,6 +103,10 @@ class Controller implements IController {
   }
 
 }
+
+
+
+
 
 Controller.getInstance().init();
 AudioController.getInstance().init();

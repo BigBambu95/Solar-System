@@ -27,6 +27,7 @@ interface IController {
 interface ICelestialBody {
   id?: number | string;
   name?: string;
+  group: string;
   radius: number;
   wSegments?: number;
   hSegments?: number;
@@ -45,6 +46,7 @@ interface ICelestialBody {
 }
 
 interface IOrbit {
+  group: string;
   tilt: number;
   semimajorAxis?: number;
   eccentricity?: number;

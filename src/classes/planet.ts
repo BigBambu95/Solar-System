@@ -15,7 +15,7 @@ class Planet extends CelestialBody {
     const spriteMap = new THREE.TextureLoader().load(this.texture);
     const material = new THREE.MeshBasicMaterial({ map: spriteMap, color: 0xffffff });
     this.sphere = new THREE.Mesh(geometry, material);
-    this.sphere.position.x = (this.aphelion - this.perihelion) + this.semimajorAxis * Math.cos(this.angle);
+    this.sphere.position.x = (this.semimajorAxis - this.perihelion) + this.semimajorAxis * Math.cos(this.angle);
     this.sphere.position.z = this.semiminorAxis * Math.sin(this.angle);
     this.sphere.rotation.z = this.tilt * Math.PI / 180;
     pivot.rotateZ(this.orbitalInclination * Math.PI / 180);
@@ -24,7 +24,7 @@ class Planet extends CelestialBody {
   }
 
   public animate(): void {
-    this.sphere.position.x = (this.aphelion - this.perihelion) + this.semimajorAxis * Math.cos(this.angle);
+    this.sphere.position.x = (this.semimajorAxis - this.perihelion) + this.semimajorAxis * Math.cos(this.angle);
     this.sphere.position.z = this.semiminorAxis * Math.sin(this.angle);
     this.sphere.rotation.y += Math.PI * 2 / this.rotationPeriod;
 

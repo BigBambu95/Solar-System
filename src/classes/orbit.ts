@@ -2,14 +2,20 @@ import * as THREE from 'three';
 import { semiminorAxis } from '../helpers';
 
 class Orbit implements IOrbit {
+  group: string;
   tilt: number;
   perihelion: number;
   aphelion: number;
   semimajorAxis: number;
   semiminorAxis: number;
   eccentricity: number;
+  color: string;
 
-  constructor(tilt: number, perihelion: number, aphelion: number, semimajorAxis: number, eccentricity: number) {
+  constructor(
+    group: string, tilt: number, perihelion: number, 
+    aphelion: number, semimajorAxis: number, eccentricity: number
+  ) {
+    this.group = group;
     this.tilt = tilt;
     this.perihelion = perihelion;
     this.aphelion = aphelion;
@@ -17,9 +23,19 @@ class Orbit implements IOrbit {
     this.eccentricity = eccentricity;
   }
 
+  private getOrbitColor(): number {
+    switch(this.group) {
+      case 'planet':
+        return 0x999999;
+      
+      case 'dwarf-planet':
+        return 0xcc8e35;
+    }
+  }
+
   render(): THREE.Line {
     this.semiminorAxis = semiminorAxis(this.semimajorAxis, this.eccentricity);
-    const x =  this.aphelion - this.perihelion;
+    const x =  this.semimajorAxis - this.perihelion;
     const y = 0;
 
     const curve = new THREE.EllipseCurve(
@@ -33,7 +49,7 @@ class Orbit implements IOrbit {
 
     const points = curve.getPoints( 100 );
     const geometry = new THREE.BufferGeometry().setFromPoints( points );
-    const material = new THREE.LineBasicMaterial( { color : 0x999999 } );
+    const material = new THREE.LineBasicMaterial( { color: this.getOrbitColor() } );
     const ellipse = new THREE.Line(geometry, material);
     ellipse.rotation.x = Math.PI / 2;
     ellipse.rotation.y = this.tilt * Math.PI / 180;

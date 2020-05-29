@@ -8,11 +8,13 @@ import saturnImg from '../textures/saturn.jpg';
 import uranusImg from '../textures/uranus.jpg';
 import neptuneImg from '../textures/neptune.jpg';
 import moonImg from '../textures/moon.jpg';
+import plutoImg from '../textures/pluto.jpg';
 
 const planets: Array<ICelestialBody> = [
   {
     id: 1,
     name: 'Earth',
+    group: 'planet',
     texture: earthImg,
     radius: 5,
     distanceFromStar: 150,
@@ -28,6 +30,7 @@ const planets: Array<ICelestialBody> = [
   {
     id: 2,
     name: 'Mercury',
+    group: 'planet',
     texture: mercuryImg,
     radius: 2,
     distanceFromStar: 58,
@@ -43,6 +46,7 @@ const planets: Array<ICelestialBody> = [
   {
     id: 3,
     name: 'Mars',
+    group: 'planet',
     texture: marsImg,
     radius: 2.5,
     distanceFromStar: 227,
@@ -58,6 +62,7 @@ const planets: Array<ICelestialBody> = [
   {
     id: 4,
     name: 'Venus',
+    group: 'planet',
     texture: venusImg,
     radius: 5,
     distanceFromStar: 108,
@@ -74,6 +79,7 @@ const planets: Array<ICelestialBody> = [
   {
     id: 5,
     name: 'Jupiter',
+    group: 'planet',
     texture: jupiterImg,
     radius: 15,
     distanceFromStar: 778,
@@ -89,6 +95,7 @@ const planets: Array<ICelestialBody> = [
       {
         id: 1,
         name: 'Ganymede',
+        group: 'moon',
         texture: moonImg,
         radius: 2,
         distanceFromStar: 1 + 15,
@@ -106,6 +113,7 @@ const planets: Array<ICelestialBody> = [
   {
     id: 6,
     name: 'Saturn',
+    group: 'planet',
     texture: saturnImg,
     radius: 12.5,
     distanceFromStar: 1429,
@@ -121,6 +129,7 @@ const planets: Array<ICelestialBody> = [
   {
     id: 7,
     name: 'Uranus',
+    group: 'planet',
     texture: uranusImg,
     radius: 7.5,
     distanceFromStar: 2876,
@@ -135,10 +144,44 @@ const planets: Array<ICelestialBody> = [
     retrogradeMotion: true
   },
   {
+    id: 8,
+    name: 'Neptune',
+    group: 'planet',
+    texture: neptuneImg,
+    radius: 7.5,
+    distanceFromStar: 4503,
+    orbitalPeriod: 3611400,
+    tilt: 28.32,
+    rotationPeriod: 40,
+    orbitalInclination: 1.76,
+    semimajorAxis: 4503,
+    eccentricity: 0.011214269,
+    perihelion: 4452,
+    aphelion: 4553
+  },
+  {
     id: 9,
-    name: 'Ceres',
-    texture: mercuryImg,
+    name: 'Pluto',
+    group: 'dwarf-planet',
+    texture: plutoImg,
     radius: 1.5,
+    distanceFromStar: 5906,
+    orbitalPeriod: 5433180,
+    tilt: 119.6,
+    rotationPeriod: 360,
+    orbitalInclination: 17.14,
+    semimajorAxis: 5906,
+    eccentricity: 0.2488273,
+    perihelion: 4400,
+    aphelion: 7400,
+    retrogradeMotion: true
+  },
+  {
+    id: 10,
+    name: 'Ceres',
+    group: 'dwarf-planet',
+    texture: mercuryImg,
+    radius: 1,
     distanceFromStar: 413,
     orbitalPeriod: 100800,
     tilt: 3,
@@ -148,6 +191,22 @@ const planets: Array<ICelestialBody> = [
     eccentricity: 0.07934,
     perihelion: 381,
     aphelion: 446.5
+  },
+  {
+    id: 11,
+    name: 'Eris',
+    group: 'dwarf-planet',
+    texture: mercuryImg,
+    radius: 1.5,
+    distanceFromStar: 10180,
+    orbitalPeriod: 12229800,
+    tilt: 0,
+    rotationPeriod: 65,
+    orbitalInclination: 44,
+    semimajorAxis: 10180,
+    eccentricity: 0.44068,
+    perihelion: 5750,
+    aphelion: 14610
   }
 
 ]
