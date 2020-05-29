@@ -41,6 +41,7 @@ interface ICelestialBody {
   eccentricity?: number;
   perihelion?: number;
   aphelion?: number;
+  moons?: Array<ICelestialBody>;
 }
 
 interface IOrbit {

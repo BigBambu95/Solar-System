@@ -7,6 +7,7 @@ import jupiterImg from '../textures/jupiter.jpg';
 import saturnImg from '../textures/saturn.jpg';
 import uranusImg from '../textures/uranus.jpg';
 import neptuneImg from '../textures/neptune.jpg';
+import moonImg from '../textures/moon.jpg';
 
 const planets: Array<ICelestialBody> = [
   {
@@ -83,7 +84,24 @@ const planets: Array<ICelestialBody> = [
     semimajorAxis: 778,
     eccentricity: 0.048775,
     perihelion: 740,
-    aphelion: 816
+    aphelion: 816,
+    moons: [
+      {
+        id: 1,
+        name: 'Ganymede',
+        texture: moonImg,
+        radius: 2,
+        distanceFromStar: 1 + 15,
+        orbitalPeriod: 420,
+        tilt: 0,
+        rotationPeriod: 0,
+        orbitalInclination: 0.2,
+        semimajorAxis: 1 + 15,
+        eccentricity: 0.0013,
+        perihelion: 1 + 15,
+        aphelion: 1 + 15
+      }
+    ]
   },
   {
     id: 6,
@@ -99,6 +117,22 @@ const planets: Array<ICelestialBody> = [
     eccentricity: 0.055723219,
     perihelion: 1353,
     aphelion: 1513
+  },
+  {
+    id: 7,
+    name: 'Uranus',
+    texture: uranusImg,
+    radius: 7.5,
+    distanceFromStar: 2876,
+    orbitalPeriod: 1841100,
+    tilt: 97.77,
+    rotationPeriod: 42,
+    orbitalInclination: 0.77,
+    semimajorAxis: 2876,
+    eccentricity: 0.044405586,
+    perihelion: 2748,
+    aphelion: 3004,
+    retrogradeMotion: true
   },
   {
     id: 9,

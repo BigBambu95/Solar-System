@@ -9,7 +9,6 @@ import Orbit from './classes/orbit';
 import Star from './classes/star';
 
 import sunImg from './textures/sun.jpg';
-import moonImg from './textures/moon.jpg';
 import bg from './textures/milky_way.jpg';
 
 
@@ -76,12 +75,22 @@ class Controller implements IController {
     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
     this.orbitControls.update();
 
-    this.sun = new Star(3, 32, 32, sunImg).render();
+    this.sun = new Star(7.5, 32, 32, sunImg).render();
     this.scene.add(this.sun);
 
     planets.forEach((data) => {
-      const { radius, texture, distanceFromStar, orbitalPeriod, tilt, rotationPeriod, orbitalInclination, semimajorAxis, eccentricity, perihelion, aphelion, retrogradeMotion } = data;
-      const planet = new Planet(radius, 32, 32, texture, distanceFromStar / this.distanceScale, orbitalPeriod, tilt, rotationPeriod, orbitalInclination, retrogradeMotion, semimajorAxis / this.distanceScale, eccentricity, perihelion / this.distanceScale, aphelion / this.distanceScale);
+      const { 
+        radius, texture, distanceFromStar, orbitalPeriod, tilt, rotationPeriod, 
+        orbitalInclination, semimajorAxis, eccentricity, perihelion, 
+        aphelion, retrogradeMotion, moons 
+      } = data;
+      
+      const planet = new Planet(
+        radius, 32, 32, texture, distanceFromStar / this.distanceScale, 
+        orbitalPeriod, tilt, rotationPeriod, orbitalInclination, retrogradeMotion, 
+        semimajorAxis / this.distanceScale, eccentricity, perihelion / this.distanceScale, 
+        aphelion / this.distanceScale, moons
+      );
       const orbit = new Orbit(orbitalInclination, perihelion / this.distanceScale, aphelion / this.distanceScale, semimajorAxis / this.distanceScale, eccentricity);
       const planetModel = planet.render();
       const orbitModel = orbit.render();
