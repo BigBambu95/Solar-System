@@ -28,6 +28,10 @@ module.exports = {
       {
         test: /\.(mp3|wav|mpe?g)$/,
         use: ['file-loader']
+      },
+      {
+        test: /\.fbx$/,
+        use: ['file-loader']
       }
     ]
   },

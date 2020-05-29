@@ -1,6 +1,9 @@
 import * as THREE from 'three';
+import FBXLoader from 'three-fbx-loader';
+
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import AudioController from './controllers/audio-controller';
+import MouseController from './controllers/mouse-controller';
 
 import { planets } from './classes/data';
 
@@ -10,6 +13,7 @@ import Star from './classes/star';
 
 import sunImg from './textures/sun.jpg';
 import bg from './textures/milky_way.jpg';
+import asteroidModel from './models/asteroid1.fbx';
 
 class Controller implements IController {
 
@@ -41,12 +45,13 @@ class Controller implements IController {
       antialias: true
     });
 
+
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
   }
 
   private initCamera() {
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 15000);
+    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50000);
     this.camera.position.set(0, 200, 350);
     this.camera.updateProjectionMatrix();
   }
@@ -56,6 +61,13 @@ class Controller implements IController {
     const bgTexture = new THREE.TextureLoader().load(bg);
     bgTexture.minFilter = THREE.LinearFilter;
     this.scene.background = bgTexture;
+  }
+
+  private initSun() {
+    this.sun = new Star('star', 10, 32, 32, sunImg).render();
+    const sunLight = new THREE.PointLight( 0xffffff, 1.25, 10000, 2 );
+    this.sun.add(sunLight);
+    this.scene.add(this.sun);
   }
 
   private animate() {
@@ -73,9 +85,21 @@ class Controller implements IController {
     this.initCamera();
     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
     this.orbitControls.update();
+    this.initSun();
 
-    this.sun = new Star('star', 10, 32, 32, sunImg).render();
-    this.scene.add(this.sun);
+    const loader = new FBXLoader();
+
+    loader.load(asteroidModel, (object3d) => {
+      try {
+        object3d.position.set(50, 0, 50);
+        object3d.scale.set(0.5, 0.5, 0.5);
+        console.log(object3d.children[0]);
+        this.scene.add(object3d.children[0]);
+      } catch(err) {
+        console.error(err);
+      }
+
+    });
 
     planets.forEach((data) => {
       const { 
@@ -110,7 +134,7 @@ class Controller implements IController {
 
 Controller.getInstance().init();
 AudioController.getInstance().init();
-
+MouseController.getInstance().init();
 
 
 // Moon 
