@@ -110,7 +110,7 @@ class Controller implements IController {
     this.initRenderer();
     this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
     this.orbitControls.update();
-    this.stats = new Stats();
+    this.stats = Stats();
     this.container.appendChild(this.stats.dom);
     this.initSun();
     this.initPlanets();
@@ -132,7 +132,7 @@ class Controller implements IController {
         mesh.material = material;
 
         this.asteroidBelt = new AsteroidBelt(asteroid);
-        this.asteroidBelt.init();
+        this.asteroidBelt.render();
 
         this.animate();
       }, 
