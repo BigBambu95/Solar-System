@@ -30,7 +30,11 @@ module.exports = {
         use: ['file-loader']
       },
       {
-        test: /\.fbx$/,
+        test: /\.(gltf)$/,
+        use: ['gltf-webpack-loader']
+      },
+      {
+        test: /\.(bin)$/,
         use: ['file-loader']
       }
     ]

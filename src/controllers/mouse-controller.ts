@@ -1,7 +1,16 @@
+import * as THREE from 'three';
+import CameraController from './camera-controller';
+import Controller from '../index';
+
 export default class MouseController {
   private static instance: MouseController;
+  private raycaster = null;
+  private mouse = null;
+  private planets = null;
 
-  private constructor() {}
+  private constructor() {
+    this.onMouseMove = this.onMouseMove.bind(this);
+  }
 
   public static getInstance() {
     if(!MouseController.instance) {
@@ -11,16 +20,32 @@ export default class MouseController {
     return MouseController.instance;
   }
 
+  private onMouseMove(e) {
+    this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = - (e.clientY / window.innerHeight) * 2 + 1; 
+  }
 
-  private onClick(e) {
-    console.log(e);
+  public animate() {
+    this.raycaster.setFromCamera(this.mouse, CameraController.getInstance().getCamera());
+
+    const intersects = this.raycaster.intersectObjects(Controller.getInstance().planets.map(item => item.sphere));
+
+    for(let i = 0; i < intersects.length; i++) {
+      if(intersects[i].object.name) {
+
+      }
+    }
+ 
+
   }
 
   init() {
-    console.log('Mouse Controller initialized');
-
-    document.addEventListener('click', (e) => {
-      this.onClick(e);
-    });
+    if(this.mouse === null) {
+      this.raycaster = new THREE.Raycaster();
+      this.mouse = new THREE.Vector2();
+ 
+      window.addEventListener('mousemove', this.onMouseMove, false);
+      console.log('Mouse Controller initialized');
+    }
   }
 }

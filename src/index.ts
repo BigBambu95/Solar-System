@@ -1,9 +1,10 @@
 import * as THREE from 'three';
-import FBXLoader from 'three-fbx-loader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import Stats from 'three/examples/jsm/libs/stats.module.js';
 
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import AudioController from './controllers/audio-controller';
-import MouseController from './controllers/mouse-controller';
+import { SceneController, AudioController, MouseController, CameraController } from './controllers';
+
 
 import { planets } from './classes/data';
 
@@ -12,20 +13,26 @@ import Orbit from './classes/orbit';
 import Star from './classes/star';
 
 import sunImg from './textures/sun.jpg';
-import bg from './textures/milky_way.jpg';
-import asteroidModel from './models/asteroid1.fbx';
+import asteroidModel from './models/asteroid1.gltf';
+import asteroidTexture from './textures/asteroid1_BaseColor.jpg';
+import asteroidNormalTexture from './textures/asteroid1_Normal.jpg';
+import asteroidRoughnessTexture from './textures/asteroid1_OcclusionRoughnessMetallic.jpg';
+import AsteroidBelt from './classes/asteroid-belt';
 
 class Controller implements IController {
 
   private static instance: Controller;
-  renderer = null;
+  container = null;
   scene = null;
+  renderer = null;
   camera = null;
   orbitControls = null;
+  stats = null;
   distanceScale = 3;
   timeScale = 2;
   sun = null;
   planets = [];
+  asteroidBelt = null;
 
   private constructor() {
 
@@ -40,76 +47,33 @@ class Controller implements IController {
     return Controller.instance;
   }
 
-  private initRenderer() {
+  private initRenderer(): void {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true
     });
 
-
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(this.renderer.domElement);
+    this.container = document.getElementById('container');
+    this.container.appendChild(this.renderer.domElement);
   }
 
-  private initCamera() {
-    this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50000);
-    this.camera.position.set(0, 200, 350);
-    this.camera.updateProjectionMatrix();
-  }
-
-  private initScene() {
-    this.scene = new THREE.Scene();
-    const bgTexture = new THREE.TextureLoader().load(bg);
-    bgTexture.minFilter = THREE.LinearFilter;
-    this.scene.background = bgTexture;
-  }
-
-  private initSun() {
-    this.sun = new Star('star', 10, 32, 32, sunImg).render();
-    const sunLight = new THREE.PointLight( 0xffffff, 1.25, 10000, 2 );
+  private initSun(): void {
+    this.sun = new Star('Sun', 'star', 10, 32, 32, sunImg).render();
+    const sunLight = new THREE.PointLight( 0xffffff, 1.25, 10000, 3 );
     this.sun.add(sunLight);
     this.scene.add(this.sun);
   }
 
-  private animate() {
-    this.sun.rotation.y += 2 * Math.PI / 1500;
-    this.planets.forEach(planet => planet.animate());
-
-    this.renderer.render(this.scene, this.camera);
-    this.orbitControls.update();
-    requestAnimationFrame(this.animate);
-  }
-
-  public init() {
-    this.initRenderer();
-    this.initScene();
-    this.initCamera();
-    this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.orbitControls.update();
-    this.initSun();
-
-    const loader = new FBXLoader();
-
-    loader.load(asteroidModel, (object3d) => {
-      try {
-        object3d.position.set(50, 0, 50);
-        object3d.scale.set(0.5, 0.5, 0.5);
-        console.log(object3d.children[0]);
-        this.scene.add(object3d.children[0]);
-      } catch(err) {
-        console.error(err);
-      }
-
-    });
-
+  private initPlanets(): void {
     planets.forEach((data) => {
       const { 
         radius, texture, distanceFromStar, orbitalPeriod, tilt, rotationPeriod, 
         orbitalInclination, semimajorAxis, eccentricity, perihelion, 
-        aphelion, retrogradeMotion, moons, group 
+        aphelion, retrogradeMotion, moons, group, name 
       } = data;
       
       const planet = new Planet(
-        group, radius, 32, 32, texture, distanceFromStar / this.distanceScale + 10, 
+        name, group, radius, 32, 32, texture, distanceFromStar / this.distanceScale + 10, 
         orbitalPeriod, tilt, rotationPeriod, orbitalInclination, retrogradeMotion, 
         semimajorAxis / this.distanceScale + 10, eccentricity, perihelion / this.distanceScale + 10, 
         aphelion / this.distanceScale + 10, moons
@@ -122,20 +86,70 @@ class Controller implements IController {
       this.scene.add(orbitModel);
       this.planets.push(planet);
     });
+  }
 
-    this.animate();
+  private animate() {
+    this.sun.rotation.y += 2 * Math.PI / 1500;
+    this.planets.forEach(planet => planet.animate());
+    this.asteroidBelt.animate();
+    MouseController.getInstance().animate();
+
+    this.renderer.render(this.scene, this.camera);
+    this.orbitControls.update();
+    this.stats.update();
+    requestAnimationFrame(this.animate);
+  }
+
+  public init() {
+    SceneController.getInstance().init();
+    CameraController.getInstance().init();
+    MouseController.getInstance().init();
+    AudioController.getInstance().init();
+    this.scene = SceneController.getInstance().getScene();
+    this.camera = CameraController.getInstance().getCamera();
+    this.initRenderer();
+    this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.orbitControls.update();
+    this.stats = new Stats();
+    this.container.appendChild(this.stats.dom);
+    this.initSun();
+    this.initPlanets();
+
+    const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.05);
+    this.scene.add(hemisphereLight);
+
+    const loader = new GLTFLoader();
+    let asteroid = new THREE.Object3D();
+
+    loader.load(asteroidModel, 
+      (object3d) => {
+        asteroid = object3d.scene;
+        const spriteMap = new THREE.TextureLoader().load(asteroidTexture);
+        const normalMap = new THREE.TextureLoader().load(asteroidNormalTexture);
+        const roughnessMap = new THREE.TextureLoader().load(asteroidRoughnessTexture);
+        const material = new THREE.MeshStandardMaterial({ map: spriteMap, normalMap: normalMap, roughnessMap: roughnessMap, color: 0xffffff });
+        const mesh: any = asteroid.children[0];
+        mesh.material = material;
+
+        this.asteroidBelt = new AsteroidBelt(asteroid);
+        this.asteroidBelt.init();
+
+        this.animate();
+      }, 
+      (xhr) => console.log('3D model ' + (xhr.loaded / xhr.total * 100 ) + '% loaded'),
+      (err) => console.error(err)
+    );
+    
+
   }
 
 }
 
 
-
-
-
 Controller.getInstance().init();
-AudioController.getInstance().init();
-MouseController.getInstance().init();
 
+
+export default Controller;
 
 // Moon 
 // const moon = new Moon(1, 32, 32, moonImg, 25 / 3, 1620, 1.5, 60);

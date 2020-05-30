@@ -13,6 +13,7 @@ class Planet extends CelestialBody {
     const spriteMap = new THREE.TextureLoader().load(this.texture);
     const material = new THREE.MeshStandardMaterial({ map: spriteMap, color: 0xffffff });
     this.sphere = new THREE.Mesh(geometry, material);
+    this.sphere.name = this.name;
     this.sphere.position.x = (this.semimajorAxis - this.perihelion) + this.semimajorAxis * Math.cos(this.angle);
     this.sphere.position.z = this.semiminorAxis * Math.sin(this.angle);
     this.sphere.rotation.z = this.tilt * Math.PI / 180;

@@ -18,6 +18,12 @@ declare module "*.fbx" {
   export default value;
 }
 
+declare module "*.gltf" {
+  const value: string;
+  export default value;
+}
+
+
 
 interface IController {
   renderer: THREE.WebGLRenderer | null;
@@ -32,7 +38,7 @@ interface IController {
 
 interface ICelestialBody {
   id?: number | string;
-  name?: string;
+  name: string;
   group: string;
   radius: number;
   wSegments?: number;
