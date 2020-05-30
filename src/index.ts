@@ -118,10 +118,10 @@ class Controller implements IController {
     const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.05);
     this.scene.add(hemisphereLight);
 
-    const loader = new GLTFLoader();
+    const modelLoader = new GLTFLoader();
     let asteroid = new THREE.Object3D();
 
-    loader.load(asteroidModel, 
+    modelLoader.load(asteroidModel, 
       (object3d) => {
         asteroid = object3d.scene;
         const spriteMap = new THREE.TextureLoader().load(asteroidTexture);

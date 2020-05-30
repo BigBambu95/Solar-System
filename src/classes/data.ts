@@ -9,6 +9,7 @@ import uranusImg from '../textures/uranus.jpg';
 import neptuneImg from '../textures/neptune.jpg';
 import moonImg from '../textures/moon.jpg';
 import plutoImg from '../textures/pluto.jpg';
+import makemakeImg from '../textures/makemake.jpg';
 
 const planets: Array<ICelestialBody> = [
   {
@@ -207,6 +208,38 @@ const planets: Array<ICelestialBody> = [
     eccentricity: 0.44068,
     perihelion: 5750,
     aphelion: 14610
+  },
+  {
+    id: 12,
+    name: 'Makemake',
+    group: 'dwarf-planet',
+    texture: makemakeImg,
+    radius: 2,
+    distanceFromStar: 6800,
+    orbitalPeriod: 6701400,
+    tilt: 0,
+    rotationPeriod: 19.25,
+    orbitalInclination: 29,
+    semimajorAxis: 6800,
+    eccentricity: 0.16254481,
+    perihelion: 5690,
+    aphelion: 7900
+  },
+  {
+    id: 13,
+    name: 'Quawar',
+    group: 'dwarf-planet',
+    texture: mercuryImg,
+    radius: 2,
+    distanceFromStar: 6496,
+    orbitalPeriod: 6263400,
+    tilt: 0,
+    rotationPeriod: 30,
+    orbitalInclination: 8,
+    semimajorAxis: 6496,
+    eccentricity: 0.035127279663,
+    perihelion: 6300,
+    aphelion: 6735
   }
 
 ]

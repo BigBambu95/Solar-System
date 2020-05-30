@@ -36,7 +36,7 @@ module.exports = {
       {
         test: /\.(bin)$/,
         use: ['file-loader']
-      }
+      },
     ]
   },
   resolve: {

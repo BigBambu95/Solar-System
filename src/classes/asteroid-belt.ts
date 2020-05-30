@@ -26,7 +26,6 @@ export default class AsteroidBelt {
     }
 
     SceneController.getInstance().getScene().add(this.pivot);
-    console.log(this.asteroids);
   }
 
   animate() {
