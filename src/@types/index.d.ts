@@ -70,3 +70,12 @@ interface IOrbit {
   perihelion?: number;
   aphelion?: number;
 }
+
+interface IBelt {
+  distanceFromStarMin: number;
+  distanceFromStarMax: number;
+  orbitalPeriodMin: number;
+  orbitalPeriodMax: number;
+  asteroidCount: number;
+  asteroidScale: number;
+}

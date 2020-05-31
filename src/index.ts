@@ -6,7 +6,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SceneController, AudioController, MouseController, CameraController } from './controllers';
 
 
-import { planets } from './classes/data';
+import { planets, kuiperBelt, asteroidBelt } from './classes/data';
 
 import Planet from './classes/planet';
 import Orbit from './classes/orbit';
@@ -33,6 +33,7 @@ class Controller implements IController {
   sun = null;
   planets = [];
   asteroidBelt = null;
+  kuiperBelt = null;
 
   private constructor() {
 
@@ -47,6 +48,10 @@ class Controller implements IController {
     return Controller.instance;
   }
 
+  public getDistanceScale() {
+    return this.distanceScale;
+  }
+
   private initRenderer(): void {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true
@@ -59,7 +64,7 @@ class Controller implements IController {
 
   private initSun(): void {
     this.sun = new Star('Sun', 'star', 10, 32, 32, sunImg).render();
-    const sunLight = new THREE.PointLight( 0xffffff, 1.25, 10000, 3 );
+    const sunLight = new THREE.PointLight( 0xffffff, 0.85, 10000, 0.5 );
     this.sun.add(sunLight);
     this.scene.add(this.sun);
   }
@@ -92,8 +97,8 @@ class Controller implements IController {
     this.sun.rotation.y += 2 * Math.PI / 1500;
     this.planets.forEach(planet => planet.animate());
     this.asteroidBelt.animate();
+    this.kuiperBelt.animate();
     MouseController.getInstance().animate();
-
     this.renderer.render(this.scene, this.camera);
     this.orbitControls.update();
     this.stats.update();
@@ -115,9 +120,6 @@ class Controller implements IController {
     this.initSun();
     this.initPlanets();
 
-    const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.05);
-    this.scene.add(hemisphereLight);
-
     const modelLoader = new GLTFLoader();
     let asteroid = new THREE.Object3D();
 
@@ -131,8 +133,11 @@ class Controller implements IController {
         const mesh: any = asteroid.children[0];
         mesh.material = material;
 
-        this.asteroidBelt = new AsteroidBelt(asteroid);
+        this.asteroidBelt = new AsteroidBelt(asteroid, asteroidBelt);
         this.asteroidBelt.render();
+
+        this.kuiperBelt = new AsteroidBelt(asteroid, kuiperBelt);
+        this.kuiperBelt.render();
 
         this.animate();
       }, 
@@ -148,16 +153,8 @@ class Controller implements IController {
 
 Controller.getInstance().init();
 
-
 export default Controller;
 
-// Moon 
-// const moon = new Moon(1, 32, 32, moonImg, 25 / 3, 1620, 1.5, 60);
-// const moonRender = moon.render();
-// const moonOrbit = new Orbit(25 / 3, 5).render();
-
-// earth.sphere.add(moonRender);
-// earth.sphere.add(moonOrbit);
 
 
 

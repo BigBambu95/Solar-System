@@ -1,28 +1,32 @@
 import * as THREE from 'three';
+import Controller from '../index';
 import { SceneController } from '../controllers';
 import Asteroid from './asteroid';
 
 export default class AsteroidBelt {
-  private asteroidCount: number = 1000;
   private asteroid: THREE.Object3D = null;
   private pivot: THREE.Object3D = null;
   private asteroids: Array<Asteroid> = []; 
   private angle: number = 0;
+  private data: IBelt;
 
-  constructor(model: THREE.Object3D) {
+  constructor(model: THREE.Object3D, data: IBelt) {
     this.asteroid = model;
+    this.data = data;
   }
 
   public render() {
     this.pivot = new THREE.Object3D();
+    const distanceScale = Controller.getInstance().getDistanceScale();
+    const { distanceFromStarMin, distanceFromStarMax, orbitalPeriodMin, orbitalPeriodMax, asteroidCount, asteroidScale } = this.data;
 
-    for(let i = 1; i < this.asteroidCount; i++) {
+    for(let i = 1; i < asteroidCount; i++) {
       const asteroidClone = this.asteroid.clone();
-      const asteroid = new Asteroid(asteroidClone, 76650, 131400, 110, 180, this.angle);
+      const asteroid = new Asteroid(asteroidClone, orbitalPeriodMin, orbitalPeriodMax, distanceFromStarMin / distanceScale, distanceFromStarMax / distanceScale, this.angle, asteroidScale);
       const asteroidModel = asteroid.render();
       this.pivot.add(asteroidModel);
       this.asteroids.push(asteroid);
-      this.angle += Math.PI * 2 / this.asteroidCount;
+      this.angle += Math.PI * 2 / asteroidCount;
     }
 
     SceneController.getInstance().getScene().add(this.pivot);

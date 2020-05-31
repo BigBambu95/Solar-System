@@ -1,13 +1,14 @@
 import * as THREE from 'three';
 import CelestialBody from './celestial-body';
 import { semiminorAxis } from '../helpers';
-import { CameraController, SceneController } from '../controllers';
+import { CameraController } from '../controllers';
 
 import fontJson from '../fonts/helvetica.typeface.json';
 
 class Planet extends CelestialBody {
   sphere = null;
   label = null;
+  light = null;
   angle = Math.floor(Math.random() * Math.PI * 2);
   semiminorAxis = semiminorAxis(this.semimajorAxis, this.eccentricity);
 
@@ -38,23 +39,41 @@ class Planet extends CelestialBody {
     this.label.position.set(x - 5, this.radius + 5, z);
     this.label.lookAt(CameraController.getInstance().getCamera().position);
 
+    this.light = new THREE.PointLight(0xffee88, 1, 100, 2);
+    // const planetLightGeometry = new THREE.SphereBufferGeometry(0.02, 16, 8);
+    // const planetLightMat = new THREE.MeshStandardMaterial({
+      // emissive: 0xffffee,
+      // emissiveIntensity: 1,
+      // color: 0x000000
+    // });
+    // const planetLightMesh = new THREE.Mesh(planetLightGeometry, planetLightMat);
+    this.light.position.set(x, 0, z);
+
     pivot.rotateZ(this.orbitalInclination * Math.PI / 180);
     pivot.add(this.sphere);
     pivot.add(this.label);
+    pivot.add(this.light);
     return pivot;
   }
 
   public animate(): void {
     const x = (this.semimajorAxis - this.perihelion) + this.semimajorAxis * Math.cos(this.angle);
     const z = this.semiminorAxis * Math.sin(this.angle);
+    const camVector = CameraController.getInstance().getCamera().position;
+    const planetVector = this.sphere.position;
+    const distanceToPlanet = camVector.distanceTo(planetVector);
+    const labelScale = distanceToPlanet / 300;
 
-    this.sphere.position.x = x;
-    this.sphere.position.z = z;
+    this.sphere.position.set(x, 0, z);
     this.sphere.rotation.y += Math.PI * 2 / this.rotationPeriod;
+
 
     this.label.position.x = x - 5;
     this.label.position.z = z;
+    this.label.scale.set(labelScale, labelScale, labelScale);
     this.label.lookAt(CameraController.getInstance().getCamera().position);
+
+    this.light.position.set(x, 0, z);
 
     if(this.retrogradeMotion) {
       this.angle -= Math.PI * 2 / this.orbitalPeriod;

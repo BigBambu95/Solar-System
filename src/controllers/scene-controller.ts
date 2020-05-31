@@ -21,6 +21,10 @@ export default class SceneController {
       const bgTexture = new THREE.TextureLoader().load(sceneBackground);
       bgTexture.minFilter = THREE.LinearFilter;
       this.scene.background = bgTexture;
+
+      const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.25);
+      this.scene.add(hemisphereLight);
+  
   
       console.log('Scene Controller initialized');
       return 'success';

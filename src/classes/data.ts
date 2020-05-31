@@ -241,9 +241,28 @@ const planets: Array<ICelestialBody> = [
     perihelion: 6300,
     aphelion: 6735
   }
-
 ]
 
+const asteroidBelt = {
+  distanceFromStarMin: 330,
+  distanceFromStarMax: 540,
+  orbitalPeriodMin: 76650,
+  orbitalPeriodMax: 131400,
+  asteroidCount: 1000,
+  asteroidScale: 2750
+}
+
+const kuiperBelt = {
+  distanceFromStarMin: 4500,
+  distanceFromStarMax: 8250,
+  orbitalPeriodMin: 5433180,
+  orbitalPeriodMax: 12229800,
+  asteroidCount: 2000,
+  asteroidScale: 750
+}
+
 export {
-  planets
+  planets,
+  asteroidBelt,
+  kuiperBelt
 }
