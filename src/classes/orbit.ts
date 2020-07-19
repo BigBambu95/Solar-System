@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { semiminorAxis } from '../helpers';
 
 class Orbit implements IOrbit {
-  group: string;
+  group: bodiesTypes;
   tilt: number;
   perihelion: number;
   aphelion: number;
@@ -12,7 +12,7 @@ class Orbit implements IOrbit {
   color: string;
 
   constructor(
-    group: string, tilt: number, perihelion: number, 
+    group: bodiesTypes, tilt: number, perihelion: number, 
     aphelion: number, semimajorAxis: number, eccentricity: number
   ) {
     this.group = group;
@@ -24,13 +24,12 @@ class Orbit implements IOrbit {
   }
 
   private getOrbitColor(): number {
-    switch(this.group) {
-      case 'planet':
-        return 0x999999;
-      
-      case 'dwarf-planet':
-        return 0xcc8e35;
+    const bodies = {
+      'planet': 0x999999, 
+      'dwarf-planet': 0xcc8e35
     }
+
+    return bodies[this.group];
   }
 
   render(): THREE.Line {

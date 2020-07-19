@@ -84,7 +84,12 @@ class Controller implements IController {
         aphelion / this.distanceScale + 10, moons
       );
 
-      const orbit = new Orbit(group, orbitalInclination, perihelion / this.distanceScale + 10, aphelion / this.distanceScale + 10, semimajorAxis / this.distanceScale + 10, eccentricity);
+      const orbit = new Orbit(
+        group, orbitalInclination, perihelion / this.distanceScale + 10, 
+        aphelion / this.distanceScale + 10, semimajorAxis / this.distanceScale + 10, 
+        eccentricity
+      );
+      
       const planetModel = planet.render();
       const orbitModel = orbit.render();
       this.scene.add(planetModel);
@@ -129,7 +134,12 @@ class Controller implements IController {
         const spriteMap = new THREE.TextureLoader().load(asteroidTexture);
         const normalMap = new THREE.TextureLoader().load(asteroidNormalTexture);
         const roughnessMap = new THREE.TextureLoader().load(asteroidRoughnessTexture);
-        const material = new THREE.MeshStandardMaterial({ map: spriteMap, normalMap: normalMap, roughnessMap: roughnessMap, color: 0xffffff });
+        const material = new THREE.MeshStandardMaterial({
+           map: spriteMap, 
+           normalMap: normalMap, 
+           roughnessMap: roughnessMap, 
+           color: 0xffffff 
+        });
         const mesh: any = asteroid.children[0];
         mesh.material = material;
 

@@ -12,7 +12,10 @@ export default class Asteroid {
   private randomOrbitalPeriod: number;
   private angle: number = 0;
 
-  constructor(object: THREE.Object3D, orbitalPeriodMin: number, orbitalPeriodMax: number, distanceFromStarMin: number, distanceFromStarMax: number, angle: number, scale: number) {
+  constructor(
+    object: THREE.Object3D, orbitalPeriodMin: number, orbitalPeriodMax: number, 
+    distanceFromStarMin: number, distanceFromStarMax: number, angle: number, scale: number
+  ) {
     this.object = object;
     this.orbitalPeriodMin = orbitalPeriodMin;
     this.orbitalPeriodMax = orbitalPeriodMax;

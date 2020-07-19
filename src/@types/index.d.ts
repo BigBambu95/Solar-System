@@ -44,7 +44,7 @@ interface IController {
 interface ICelestialBody {
   id?: number | string;
   name: string;
-  group: string;
+  group: bodiesTypes;
   radius: number;
   wSegments?: number;
   hSegments?: number;
@@ -79,3 +79,5 @@ interface IBelt {
   asteroidCount: number;
   asteroidScale: number;
 }
+
+type bodiesTypes = 'planet' | 'dwarf-planet' | 'star' | 'moon';
