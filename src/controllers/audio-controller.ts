@@ -5,6 +5,7 @@ export default class AudioController {
 
   private constructor() {}
 
+  // SIngleton
   public static getInstance() {
     if(!AudioController.instance) {
       AudioController.instance = new AudioController();
@@ -20,7 +21,7 @@ export default class AudioController {
       .then(ambient => {
         const audio = new Audio(ambient.default);
         audio.loop = true;
-        audio.play();
+        // audio.play();
         console.log('Audio Controller initialized');
       })
       .catch(err => console.error(err));
