@@ -8,6 +8,7 @@
     "build": "webpack"
   },
   "dependencies": {
+    "lodash": "^4.17.20",
     "three": "^0.116.1",
     "three-fbx-loader": "^1.0.3"
   },
