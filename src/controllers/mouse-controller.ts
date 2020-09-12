@@ -28,13 +28,13 @@ export default class MouseController {
   public animate() {
     this.raycaster.setFromCamera(this.mouse, CameraController.getInstance().getCamera());
 
-    const intersects = this.raycaster.intersectObjects(Controller.getInstance().planets.map(item => item.sphere));
+    // const intersects = this.raycaster.intersectObjects(Controller.getInstance().planets.map(item => item.sphere));
 
-    for(let i = 0; i < intersects.length; i++) {
-      if(intersects[i].object.name) {
+    // for(let i = 0; i < intersects.length; i++) {
+    //   if(intersects[i].object.name) {
 
-      }
-    }
+    //   }
+    // }
  
 
   }
@@ -44,7 +44,7 @@ export default class MouseController {
       this.raycaster = new THREE.Raycaster();
       this.mouse = new THREE.Vector2();
  
-      window.addEventListener('mousemove', this.onMouseMove, false);
+      // window.addEventListener('mousemove', this.onMouseMove, false);
       console.log('Mouse Controller initialized');
     }
   }

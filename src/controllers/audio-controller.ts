@@ -5,6 +5,7 @@ export default class AudioController {
 
   private constructor() {}
 
+  // SIngleton
   public static getInstance() {
     if(!AudioController.instance) {
       AudioController.instance = new AudioController();
