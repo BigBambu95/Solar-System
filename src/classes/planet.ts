@@ -2,30 +2,15 @@ import * as THREE from 'three';
 import CelestialBody from './celestial-body';
 import { semiminorAxis, getPlanetPosX, getPlanetPosZ } from '../helpers';
 import { CameraController } from '../controllers';
-import fontJson from '../fonts/helvetica.typeface.json';
+import Label from './label'
 
 class Planet extends CelestialBody {
   private sphere = null;
-  private label = null;
   private angle: number = Math.floor(Math.random() * Math.PI * 2);
   private semiminorAxis: number = semiminorAxis(this.semimajorAxis, this.eccentricity);
   private x: number = null;
   private z: number = null;
-
-  // Создание названия планеты при первоначальном рендере
-  private createLabel() {
-    const font = new THREE.Font(fontJson);
-    const textGeometry = new THREE.TextGeometry(this.name, { font, size: 3, height: 0.25 });
-    const textMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
-    this.label = new THREE.Mesh(textGeometry, textMaterial);
-  }
-
-  // Метод масштабирования и поворота названия планеты
-  private animateLabel(distanceToPlanet: number) {
-    this.label.position.set(this.x - 3, this.radius + 7, this.z);
-    this.label.scale.set(distanceToPlanet / 350, distanceToPlanet / 350, distanceToPlanet / 350);
-    this.label.lookAt(CameraController.getInstance().getCamera().position);
-  }
+  private label: Label = null;
 
   render(): THREE.Object3D {
     const pivot = new THREE.Object3D();
@@ -36,11 +21,13 @@ class Planet extends CelestialBody {
     this.sphere.name = this.name;
     this.sphere.rotation.z = this.tilt * Math.PI / 180;
 
-    this.createLabel();
+    // Название планеты
+    // this.label = new Label(this.name, this.x - 3, this.radius + 7, this.z);
+    // const labelMesh = this.label.render();
 
     pivot.rotateZ(this.orbitalInclination * Math.PI / 180);
     pivot.add(this.sphere);
-    pivot.add(this.label);
+    // pivot.add(labelMesh);
     return pivot;
   }
 
@@ -58,7 +45,7 @@ class Planet extends CelestialBody {
     const distanceToPlanet = camVector.distanceTo(this.sphere.position);
     
     // Масштабирование и поворот названия планеты
-    this.animateLabel(distanceToPlanet);
+    // this.label.animate(distanceToPlanet);
 
     // Если планету не видно она светится белым
     if(distanceToPlanet > 1500 && this.radius < 5) {
