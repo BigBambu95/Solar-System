@@ -21,6 +21,7 @@ class Label {
     const textGeometry = new THREE.TextGeometry(this.text, { font, size: 3, height: 0.25 });
     const textMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
     this.label = new THREE.Mesh(textGeometry, textMaterial);
+    this.label.position.set(this.x, this.y, this.z);
     return this.label;
   }
 

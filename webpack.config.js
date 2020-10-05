@@ -43,7 +43,8 @@ module.exports = {
     extensions: ['.ts', '.js' ],
   },
   devServer: {
-    contentBase: path.resolve(__dirname, 'public/index.html')
+    contentBase: path.resolve(__dirname, 'public/index.html'),
+    historyApiFallback: true
   },
   plugins: [
     new HtmlWebpackPlugin({

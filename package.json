@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --open",
-    "build": "webpack"
+    "build": "webpack",
+    "changelog": "auto-changelog -p && git add CHANGELOG.md"
   },
   "dependencies": {
     "lodash": "^4.17.20",
@@ -16,6 +17,7 @@
     "@babel/core": "^7.11.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@types/three": "^0.103.2",
+    "auto-changelog": "^2.2.1",
     "babel-loader": "^8.1.0",
     "file-loader": "^6.0.0",
     "gltf-webpack-loader": "^1.0.6",
