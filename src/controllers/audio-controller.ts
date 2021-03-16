@@ -21,7 +21,7 @@ export default class AudioController {
       .then(ambient => {
         const audio = new Audio(ambient.default);
         audio.loop = true;
-        // audio.play();
+        audio.play();
         console.log('Audio Controller initialized');
       })
       .catch(err => console.error(err));

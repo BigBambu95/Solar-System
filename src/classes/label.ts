@@ -1,34 +1,31 @@
 import * as THREE from 'three'
+import { Vector3 } from 'three';
 import CameraController from '../controllers/camera-controller'
 import fontJson from '../fonts/helvetica.typeface.json';
 
 class Label {
-  private label: THREE.Mesh;
+  private mesh: THREE.Mesh;
   private text: string;
-  private x: number;
-  private y: number;
-  private z: number;
+  private position: Vector3;
 
-  constructor(text: string, x: number, y: number, z: number) {
+  constructor(text: string, position: Vector3) {
     this.text = text;
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.position = position;
   }
 
   render() {
     const font = new THREE.Font(fontJson);
     const textGeometry = new THREE.TextGeometry(this.text, { font, size: 3, height: 0.25 });
     const textMaterial = new THREE.MeshBasicMaterial({color: 0xffffff});
-    this.label = new THREE.Mesh(textGeometry, textMaterial);
-    this.label.position.set(this.x, this.y, this.z);
-    return this.label;
+    this.mesh = new THREE.Mesh(textGeometry, textMaterial);
+    this.mesh.position.set(this.position.x, this.position.y, this.position.z)
+    return this.mesh;
   }
 
-  animate(distanceToPlanet: number) {
-    this.label.position.set(this.x, this.y, this.z);
-    this.label.scale.set(distanceToPlanet / 350, distanceToPlanet / 350, distanceToPlanet / 350);
-    this.label.lookAt(CameraController.getInstance().getCamera().position);
+  animate(distanceToPlanet: number, position: Vector3) {
+    this.mesh.position.set(position.x, position.y, position.z)
+    this.mesh.scale.set(distanceToPlanet / 350, distanceToPlanet / 350, distanceToPlanet / 350);
+    this.mesh.lookAt(CameraController.getInstance().getCamera().position);
   }
 }
 

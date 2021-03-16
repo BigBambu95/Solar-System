@@ -17,31 +17,8 @@ export const getPlanetPosZ = (
   semiminorAxis: number, angle: number
 ) => semiminorAxis * Math.sin(angle);
 
-export function throttle(f: any, ms: number) {
-	let isThrottled = false,
-	savedArgs,
-	savedThis;
 
-	function wrapper() {
-		if(isThrottled) {
-			savedArgs = arguments;
-			savedThis = this;
-			return null;
-		}
-
-		f.apply(this, arguments);
-
-		isThrottled = true;
-
-		setTimeout(() => {
-			isThrottled = false;
-			if(savedArgs) {
-				wrapper.apply(savedThis, savedArgs);
-				savedArgs = savedThis = null;
-			}
-		}, ms);
-
-	}
-
-	return wrapper;
+export const getPlanetRotate = (orbitalPeriod: number, retrogradeMotion?: boolean) => {
+	const angle = Math.PI * 2 / orbitalPeriod
+	return retrogradeMotion ? -angle : angle
 }

@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import CelestialBody from './celestial-body';
-import { semiminorAxis, getPlanetPosX, getPlanetPosZ } from '../helpers';
+import { semiminorAxis, getPlanetPosX, getPlanetPosZ, getPlanetRotate } from '../helpers';
 import { CameraController } from '../controllers';
 import Label from './label'
+import { Vector3 } from 'three';
 
 class Planet extends CelestialBody {
   private sphere = null;
@@ -22,12 +23,12 @@ class Planet extends CelestialBody {
     this.sphere.rotation.z = this.tilt * Math.PI / 180;
 
     // Название планеты
-    // this.label = new Label(this.name, this.x - 3, this.radius + 7, this.z);
-    // const labelMesh = this.label.render();
+    this.label = new Label(this.name, new Vector3(this.x - 3, this.radius + 7, this.z));
+    const labelMesh = this.label.render();
 
     pivot.rotateZ(this.orbitalInclination * Math.PI / 180);
     pivot.add(this.sphere);
-    // pivot.add(labelMesh);
+    pivot.add(labelMesh);
     return pivot;
   }
 
@@ -36,8 +37,9 @@ class Planet extends CelestialBody {
     this.x = getPlanetPosX(this.semimajorAxis, this.perihelion, this.angle);
     this.z = getPlanetPosZ(this.semiminorAxis, this.angle);
     this.sphere.position.set(this.x, 0, this.z);
+    this.angle -= getPlanetRotate(this.orbitalPeriod, this.retrogradeMotion)
 
-    // Анимация вращения вокруг своей оси
+    // Задаем планете вращение вокруг своей оси в каждом кадре
     this.sphere.rotation.y += Math.PI * 2 / this.rotationPeriod;
 
     // Получение дистанции от камеры до планеты
@@ -45,7 +47,7 @@ class Planet extends CelestialBody {
     const distanceToPlanet = camVector.distanceTo(this.sphere.position);
     
     // Масштабирование и поворот названия планеты
-    // this.label.animate(distanceToPlanet);
+    this.label.animate(distanceToPlanet, new Vector3(this.x, this.radius + 7, this.z));
 
     // Если планету не видно она светится белым
     if(distanceToPlanet > 1500 && this.radius < 5) {
@@ -53,14 +55,6 @@ class Planet extends CelestialBody {
     } else {
       this.sphere.material.emissiveIntensity = 0;
     }
-
-    // Ретроградное вращение
-    if(this.retrogradeMotion) {
-      this.angle -= Math.PI * 2 / this.orbitalPeriod;
-    } else {
-      this.angle += Math.PI * 2 / this.orbitalPeriod;
-    }
-
   }
   
 }
