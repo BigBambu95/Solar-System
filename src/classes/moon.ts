@@ -2,9 +2,9 @@ import * as THREE from 'three';
 import CelestialBody from './celestial-body';
 
 class Moon extends CelestialBody {
-  sphere = null;
+  private sphere: THREE.Mesh | null = null;
 
-  render(): THREE.Mesh {
+  render() {
     const geometry = new THREE.SphereGeometry(this.radius, this.wSegments, this.hSegments);
     const spriteMap = new THREE.TextureLoader().load(this.texture);
     const material = new THREE.MeshBasicMaterial({ map: spriteMap, color: 0xffffff });

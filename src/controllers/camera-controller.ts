@@ -2,7 +2,7 @@ import { PerspectiveCamera } from 'three';
 
 export default class CameraController {
   private static instance: CameraController;
-  private camera = null;
+  private camera: PerspectiveCamera | null = null;
 
   private constructor() {}
 
@@ -24,7 +24,7 @@ export default class CameraController {
     }
   }
 
-  public getCamera(): PerspectiveCamera {
+  public getCamera() {
     return this.camera;
   }
 }

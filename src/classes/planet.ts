@@ -6,14 +6,14 @@ import Label from './label'
 import { Vector3 } from 'three';
 
 class Planet extends CelestialBody {
-  private sphere = null;
-  private angle: number = Math.floor(Math.random() * Math.PI * 2);
-  private semiminorAxis: number = semiminorAxis(this.semimajorAxis, this.eccentricity);
-  private x: number = null;
-  private z: number = null;
-  private label: Label = null;
+  private sphere: THREE.Mesh | null = null;
+  private angle = Math.floor(Math.random() * Math.PI * 2);
+  private semiminorAxis = semiminorAxis(this.semimajorAxis, this.eccentricity);
+  private x = 0;
+  private z = 0;
+  private label: Label | null = null;
 
-  render(): THREE.Object3D {
+  render() {
     const pivot = new THREE.Object3D();
     const geometry = new THREE.SphereGeometry(this.radius, this.wSegments, this.hSegments);
     const spriteMap = new THREE.TextureLoader().load(this.texture);
@@ -32,7 +32,9 @@ class Planet extends CelestialBody {
     return pivot;
   }
 
-  public animate(): void {
+  animate() {
+    if(!this.sphere) return
+
     // Анимация вращения вокруг родительского объекта
     this.x = getPlanetPosX(this.semimajorAxis, this.perihelion, this.angle);
     this.z = getPlanetPosZ(this.semiminorAxis, this.angle);
@@ -47,7 +49,7 @@ class Planet extends CelestialBody {
     const distanceToPlanet = camVector.distanceTo(this.sphere.position);
     
     // Масштабирование и поворот названия планеты
-    this.label.animate(distanceToPlanet, new Vector3(this.x, this.radius + 7, this.z));
+    this.label?.animate(distanceToPlanet, new Vector3(this.x - this.radius, this.radius + 7, this.z));
 
     // Если планету не видно она светится белым
     if(distanceToPlanet > 1500 && this.radius < 5) {

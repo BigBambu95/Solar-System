@@ -37,7 +37,7 @@ interface IController {
   orbitControls: any;
   distanceScale: number;
   timeScale: number;
-  sun: ICelestialBody | null;
+  sun: any | null;
   planets: Array<ICelestialBody>;
 }
 
@@ -49,26 +49,17 @@ interface ICelestialBody {
   wSegments?: number;
   hSegments?: number;
   texture: string;
-  distanceFromStar?: number;
-  orbitalPeriod?: number;
-  tilt?: number;
-  rotationPeriod?: number;
-  orbitalInclination?: number;
-  retrogradeMotion?: boolean;
-  semimajorAxis?: number;
-  eccentricity?: number;
-  perihelion?: number;
-  aphelion?: number;
-  moons?: Array<ICelestialBody>;
-}
-
-interface IOrbit {
-  group: string;
+  distanceFromStar: number;
+  orbitalPeriod: number;
   tilt: number;
-  semimajorAxis?: number;
-  eccentricity?: number;
-  perihelion?: number;
-  aphelion?: number;
+  rotationPeriod: number;
+  orbitalInclination: number;
+  semimajorAxis: number;
+  eccentricity: number;
+  perihelion: number;
+  aphelion: number;
+  retrogradeMotion?: boolean;
+  moons?: Array<ICelestialBody>;
 }
 
 interface IBelt {

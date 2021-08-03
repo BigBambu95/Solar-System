@@ -4,11 +4,12 @@ import CameraController from '../controllers/camera-controller'
 import fontJson from '../fonts/helvetica.typeface.json';
 
 class Label {
-  private mesh: THREE.Mesh;
-  private text: string;
-  private position: Vector3;
+  private mesh: THREE.Mesh | null = null;
 
-  constructor(text: string, position: Vector3) {
+  constructor(
+    private text: string, 
+    private position: Vector3
+  ) {
     this.text = text;
     this.position = position;
   }
@@ -23,6 +24,8 @@ class Label {
   }
 
   animate(distanceToPlanet: number, position: Vector3) {
+    if(!this.mesh) return
+    
     this.mesh.position.set(position.x, position.y, position.z)
     this.mesh.scale.set(distanceToPlanet / 350, distanceToPlanet / 350, distanceToPlanet / 350);
     this.mesh.lookAt(CameraController.getInstance().getCamera().position);

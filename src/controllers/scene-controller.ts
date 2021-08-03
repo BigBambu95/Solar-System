@@ -3,7 +3,7 @@ import sceneBackground from '../textures/milky_way.jpg';
 
 export default class SceneController {
   private static instance: SceneController;
-  private scene = null;
+  private scene: THREE.Scene | null = null;
 
   private constructor() {}
 
@@ -15,7 +15,7 @@ export default class SceneController {
     return SceneController.instance;
   }
 
-  public init(): string {
+  public init() {
     if(this.scene === null) {
       this.scene = new THREE.Scene();
       const bgTexture = new THREE.TextureLoader().load(sceneBackground);
@@ -31,7 +31,7 @@ export default class SceneController {
     }
   }
 
-  public getScene(): THREE.Scene {
+  public getScene() {
     return this.scene;
   }
 

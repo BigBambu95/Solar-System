@@ -18,25 +18,25 @@ import asteroidTexture from './textures/asteroid1_BaseColor.jpg';
 import asteroidNormalTexture from './textures/asteroid1_Normal.jpg';
 import asteroidRoughnessTexture from './textures/asteroid1_OcclusionRoughnessMetallic.jpg';
 import AsteroidBelt from './classes/asteroid-belt';
+import UIController from './controllers/ui-controller';
 
 class Controller implements IController {
 
   private static instance: Controller;
-  container = null;
-  scene = null;
-  renderer = null;
-  camera = null;
-  orbitControls = null;
-  stats = null;
+  container: HTMLElement | null = null;
+  scene: THREE.Scene | null = null;
+  renderer: THREE.WebGLRenderer | null = null;
+  camera: THREE.Camera | null = null;
+  orbitControls: OrbitControls | null = null;
+  stats: Stats | null = null;
   distanceScale = 3;
   timeScale = 2;
-  sun = null;
-  planets = [];
-  asteroidBelt = null;
-  kuiperBelt = null;
+  sun: Star | null = null;
+  planets: Planet[] = [];
+  asteroidBelt: AsteroidBelt | null = null;
+  kuiperBelt: AsteroidBelt | null = null;
 
   private constructor() {
-
     this.animate = this.animate.bind(this);
   }
 
@@ -52,24 +52,27 @@ class Controller implements IController {
     return this.distanceScale;
   }
 
-  private initRenderer(): void {
+  private initRenderer() {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true
     });
 
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.container = document.getElementById('container');
-    this.container.appendChild(this.renderer.domElement);
+    this.container?.appendChild(this.renderer.domElement);
   }
 
-  private initSun(): void {
-    this.sun = new Star('Sun', 'star', 10, 32, 32, sunImg).render();
+  private initSun() {
+    if(!this.scene) return
+
+    this.sun = new Star('Sun', 'star', 10, 32, 32, sunImg);
+    const sunMesh = this.sun.render()
     const sunLight = new THREE.PointLight( 0xffffff, 0.85, 10000, 0.5 );
-    this.sun.add(sunLight);
-    this.scene.add(this.sun);
+    sunMesh.add(sunLight);
+    this.scene.add(sunMesh);
   }
 
-  private initPlanets(): void {
+  private initPlanets() {
     planets.forEach((data) => {
       const { 
         radius, texture, distanceFromStar, orbitalPeriod, tilt, rotationPeriod, 
@@ -79,9 +82,9 @@ class Controller implements IController {
       
       const planet = new Planet(
         name, group, radius, 32, 32, texture, distanceFromStar / this.distanceScale + 10, 
-        orbitalPeriod, tilt, rotationPeriod, orbitalInclination, retrogradeMotion, 
+        orbitalPeriod, tilt, rotationPeriod, orbitalInclination, 
         semimajorAxis / this.distanceScale + 10, eccentricity, perihelion / this.distanceScale + 10, 
-        aphelion / this.distanceScale + 10, moons
+        aphelion / this.distanceScale + 10, retrogradeMotion,  moons
       );
 
       const orbit = new Orbit(
@@ -90,23 +93,28 @@ class Controller implements IController {
         eccentricity
       );
       
-      const planetModel = planet.render();
-      const orbitModel = orbit.render();
-      this.scene.add(planetModel);
-      this.scene.add(orbitModel);
-      this.planets.push(planet);
+      if(this.scene) {
+        const planetModel = planet.render();
+        const orbitModel = orbit.render();
+        this.scene.add(planetModel);
+        this.scene.add(orbitModel);
+        this.planets.push(planet);
+      }
     });
   }
 
+  
   private animate() {
-    this.sun.rotation.y += 2 * Math.PI / 1500;
+    if(!this.scene || !this.camera) return
+
+    this.sun?.render().rotation.y += 2 * Math.PI / 1500;
     this.planets.forEach(planet => planet.animate());
-    this.asteroidBelt.animate();
-    this.kuiperBelt.animate();
+    this.asteroidBelt?.animate();
+    this.kuiperBelt?.animate();
     MouseController.getInstance().animate();
-    this.renderer.render(this.scene, this.camera);
-    this.orbitControls.update();
-    this.stats.update();
+    this.renderer?.render(this.scene, this.camera);
+    this.orbitControls?.update();
+    this.stats?.update();
     requestAnimationFrame(this.animate);
   }
 
@@ -115,16 +123,23 @@ class Controller implements IController {
     CameraController.getInstance().init();
     MouseController.getInstance().init();
     AudioController.getInstance().init();
+    UIController.getInstance().init();
     this.scene = SceneController.getInstance().getScene();
     this.camera = CameraController.getInstance().getCamera();
     this.initRenderer();
-    this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.orbitControls.update();
+
+    if(this.renderer && this.camera) {
+      this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
+      this.orbitControls.update();
+    }
+
     this.stats = Stats();
-    this.container.appendChild(this.stats.dom);
+    this.container?.appendChild(this.stats.dom);
+    
     this.initSun();
     this.initPlanets();
 
+        // Загрузка 3д моделей
     const modelLoader = new GLTFLoader();
     let asteroid = new THREE.Object3D();
 
@@ -154,8 +169,7 @@ class Controller implements IController {
       (xhr) => console.log('3D model ' + (xhr.loaded / xhr.total * 100 ) + '% loaded'),
       (err) => console.error(err)
     );
-    
-
+  
   }
 
 }

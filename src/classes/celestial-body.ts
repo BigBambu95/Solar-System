@@ -1,28 +1,22 @@
 abstract class CelestialBody implements ICelestialBody {
-  radius: number;
-  wSegments: number;
-  hSegments: number;
-  texture: string;
-  distanceFromStar: number;
-  orbitalPeriod: number;
-  tilt: number;
-  rotationPeriod: number;
-  orbitalInclination: number;
-  retrogradeMotion: boolean;
-  semimajorAxis: number;
-  eccentricity: number;
-  perihelion: number;
-  aphelion: number;
-  moons: Array<ICelestialBody>;
-  group: bodiesTypes;
-  name: string;
-
   constructor(
-    name: string, group: bodiesTypes, radius: number, wSegments: number, hSegments: number, 
-    texture: string, distanceFromStar?: number, orbitalPeriod?: number, 
-    tilt?: number, rotationPeriod?: number, orbitalInclination: number = 0,
-    retrogradeMotion?: boolean, semimajorAxis?: number, eccentricity?: number,
-    perihelion?: number, aphelion?: number, moons?: Array<ICelestialBody>
+    public name: string,
+    public group: bodiesTypes,
+    public radius: number,
+    public wSegments: number,
+    public hSegments: number,
+    public texture: string,
+    public distanceFromStar:number,
+    public orbitalPeriod: number,
+    public rotationPeriod: number, 
+    public tilt: number,
+    public orbitalInclination: number = 0,
+    public semimajorAxis: number, 
+    public eccentricity: number,
+    public perihelion: number, 
+    public aphelion: number,
+    public retrogradeMotion?: boolean, 
+    public moons?: Array<ICelestialBody>
   ) {
     this.radius = radius;
     this.wSegments = wSegments;
