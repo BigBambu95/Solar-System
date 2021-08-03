@@ -123,8 +123,8 @@ class Controller implements IController {
     MouseController.instance.init();
     AudioController.instance.init();
     UIController.instance.init();
-    this.scene = SceneController.instance.getScene();
-    this.camera = CameraController.instance.getCamera();
+    this.scene = SceneController.instance.scene;
+    this.camera = CameraController.instance.camera;
     this.initRenderer();
 
     if(this.renderer && this.camera) {
@@ -138,7 +138,7 @@ class Controller implements IController {
     this.initSun();
     this.initPlanets();
 
-        // Загрузка 3д моделей
+    // Загрузка 3д моделей
     const modelLoader = new GLTFLoader();
     let asteroid = new THREE.Object3D();
 

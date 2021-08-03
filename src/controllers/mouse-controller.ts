@@ -47,7 +47,7 @@ export default class MouseController {
   }
 
   public animate() {
-    this.raycaster.setFromCamera(this.mouse, CameraController.instance.getCamera());
+    this.raycaster.setFromCamera(this.mouse, CameraController.instance.camera);
 
     const intersects = this.raycaster.intersectObjects(Controller.instance.planets.map(item => item.sphere));
 

@@ -3,7 +3,7 @@ import sceneBackground from '../textures/milky_way.jpg';
 
 export default class SceneController {
   private static _instance: SceneController;
-  private scene: THREE.Scene | null = null;
+  private _scene: THREE.Scene | null = null;
 
   private constructor() {}
 
@@ -16,14 +16,14 @@ export default class SceneController {
   }
 
   public init() {
-    if(this.scene === null) {
-      this.scene = new THREE.Scene();
+    if(this._scene === null) {
+      this._scene = new THREE.Scene();
       const bgTexture = new THREE.TextureLoader().load(sceneBackground);
       bgTexture.minFilter = THREE.LinearFilter;
-      this.scene.background = bgTexture;
+      this._scene.background = bgTexture;
 
       const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.25);
-      this.scene.add(hemisphereLight);
+      this._scene.add(hemisphereLight);
   
   
       console.log('Scene Controller initialized');
@@ -31,8 +31,8 @@ export default class SceneController {
     }
   }
 
-  public getScene() {
-    return this.scene;
+  public get scene() {
+    return this._scene;
   }
 
 }

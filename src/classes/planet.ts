@@ -45,7 +45,7 @@ class Planet extends CelestialBody {
     this.sphere.rotation.y += Math.PI * 2 / this.rotationPeriod;
 
     // Получение дистанции от камеры до планеты
-    const camVector = CameraController.instance.getCamera().position;
+    const camVector = CameraController.instance.camera.position;
     const distanceToPlanet = camVector.distanceTo(this.sphere.position);
     
     // Масштабирование и поворот названия планеты
