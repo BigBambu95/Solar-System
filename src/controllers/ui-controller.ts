@@ -1,14 +1,14 @@
 export default class UIController {
-  private static instance: UIController;
+  private static _instance: UIController;
   
   private constructor() {}
 
-  public static getInstance(): UIController {
-    if(!UIController.instance) {
-        UIController.instance = new UIController();
+  public static get instance() {
+    if(!UIController._instance) {
+        UIController._instance = new UIController();
     }
 
-    return UIController.instance;
+    return UIController._instance;
   }
 
   public init() {

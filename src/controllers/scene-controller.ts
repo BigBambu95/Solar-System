@@ -2,17 +2,17 @@ import * as THREE from 'three';
 import sceneBackground from '../textures/milky_way.jpg';
 
 export default class SceneController {
-  private static instance: SceneController;
+  private static _instance: SceneController;
   private scene: THREE.Scene | null = null;
 
   private constructor() {}
 
-  public static getInstance(): SceneController {
-    if(!SceneController.instance) {
-      SceneController.instance = new SceneController();
+  public static get instance() {
+    if(!SceneController._instance) {
+      SceneController._instance = new SceneController();
     }
 
-    return SceneController.instance;
+    return SceneController._instance;
   }
 
   public init() {

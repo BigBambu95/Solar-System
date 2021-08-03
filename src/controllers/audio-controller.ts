@@ -1,16 +1,15 @@
 
 export default class AudioController {
-
-  private static instance: AudioController;
+  private static _instance: AudioController;
 
   private constructor() {}
 
-  public static getInstance() {
-    if(!AudioController.instance) {
-      AudioController.instance = new AudioController();
+  public static get instance() {
+    if(!AudioController._instance) {
+      AudioController._instance = new AudioController();
     }
 
-    return AudioController.instance;
+    return AudioController._instance;
   }
 
   init() {

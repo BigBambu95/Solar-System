@@ -21,8 +21,7 @@ import AsteroidBelt from './classes/asteroid-belt';
 import UIController from './controllers/ui-controller';
 
 class Controller implements IController {
-
-  private static instance: Controller;
+  private static _instance: Controller;
   container: HTMLElement | null = null;
   scene: THREE.Scene | null = null;
   renderer: THREE.WebGLRenderer | null = null;
@@ -40,12 +39,12 @@ class Controller implements IController {
     this.animate = this.animate.bind(this);
   }
 
-  public static getInstance() {
-    if(!Controller.instance) {
-      Controller.instance = new Controller();
+  public static get instance() {
+    if(!Controller._instance) {
+      Controller._instance = new Controller();
     }
 
-    return Controller.instance;
+    return Controller._instance;
   }
 
   public getDistanceScale() {
@@ -111,7 +110,7 @@ class Controller implements IController {
     this.planets.forEach(planet => planet.animate());
     this.asteroidBelt?.animate();
     this.kuiperBelt?.animate();
-    MouseController.getInstance().animate();
+    MouseController.instance.animate();
     this.renderer?.render(this.scene, this.camera);
     this.orbitControls?.update();
     this.stats?.update();
@@ -119,13 +118,13 @@ class Controller implements IController {
   }
 
   public init() {
-    SceneController.getInstance().init();
-    CameraController.getInstance().init();
-    MouseController.getInstance().init();
-    AudioController.getInstance().init();
-    UIController.getInstance().init();
-    this.scene = SceneController.getInstance().getScene();
-    this.camera = CameraController.getInstance().getCamera();
+    SceneController.instance.init();
+    CameraController.instance.init();
+    MouseController.instance.init();
+    AudioController.instance.init();
+    UIController.instance.init();
+    this.scene = SceneController.instance.getScene();
+    this.camera = CameraController.instance.getCamera();
     this.initRenderer();
 
     if(this.renderer && this.camera) {
@@ -175,7 +174,7 @@ class Controller implements IController {
 }
 
 
-Controller.getInstance().init();
+Controller.instance.init();
 
 export default Controller;
 

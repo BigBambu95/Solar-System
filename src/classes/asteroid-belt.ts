@@ -38,9 +38,9 @@ export default class AsteroidBelt {
 
   public render() {
     this.pivot = new THREE.Object3D();
-    const distanceScale = Controller.getInstance().getDistanceScale();
+    const distanceScale = Controller.instance.getDistanceScale();
     this.createAsteroidBelt(distanceScale);
-    SceneController.getInstance().getScene().add(this.pivot);
+    SceneController.instance.getScene().add(this.pivot);
   }
 
   animate() {

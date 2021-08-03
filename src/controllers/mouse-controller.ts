@@ -3,7 +3,7 @@ import CameraController from './camera-controller';
 import Controller from '../index';
 
 export default class MouseController {
-  private static instance: MouseController;
+  private static _instance: MouseController;
   private raycaster = null;
   private mouse = null;
   private intersected = null
@@ -13,13 +13,12 @@ export default class MouseController {
     this.onClick = this.onClick.bind(this);
   }
 
-  // Singleton
-  public static getInstance() {
-    if(!MouseController.instance) {
-      MouseController.instance = new MouseController();
+  public static get instance() {
+    if(!MouseController._instance) {
+      MouseController._instance = new MouseController();
     }
 
-    return MouseController.instance;
+    return MouseController._instance;
   }
 
   private onMouseMove(e: MouseEvent) {
@@ -48,9 +47,9 @@ export default class MouseController {
   }
 
   public animate() {
-    this.raycaster.setFromCamera(this.mouse, CameraController.getInstance().getCamera());
+    this.raycaster.setFromCamera(this.mouse, CameraController.instance.getCamera());
 
-    const intersects = this.raycaster.intersectObjects(Controller.getInstance().planets.map(item => item.sphere));
+    const intersects = this.raycaster.intersectObjects(Controller.instance.planets.map(item => item.sphere));
 
     if(intersects.length > 0) {
       if(this.intersected != intersects[0].object) {
