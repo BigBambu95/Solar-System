@@ -5,7 +5,6 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SceneController, AudioController, MouseController, CameraController } from './controllers';
 
-
 import { planets, kuiperBelt, asteroidBelt } from './classes/data';
 
 import Planet from './classes/planet';
@@ -61,17 +60,19 @@ class Controller implements IController {
     this.container?.appendChild(this.renderer.domElement);
   }
 
-  private initSun() {
+  private initParentObject(object: any) {
     if(!this.scene) return
 
-    this.sun = new Star('Sun', 'star', 10, 32, 32, sunImg);
+    this.sun = object;
     const sunMesh = this.sun.render()
     const sunLight = new THREE.PointLight( 0xffffff, 0.85, 10000, 0.5 );
     sunMesh.add(sunLight);
     this.scene.add(sunMesh);
   }
 
-  private initPlanets() {
+  private initPlanets(planets: ICelestialBody[]) {
+    this.planets = []
+
     planets.forEach((data) => {
       const { 
         radius, texture, distanceFromStar, orbitalPeriod, tilt, rotationPeriod, 
@@ -93,20 +94,31 @@ class Controller implements IController {
       );
       
       if(this.scene) {
-        const planetModel = planet.render();
-        const orbitModel = orbit.render();
-        this.scene.add(planetModel);
-        this.scene.add(orbitModel);
-        this.planets.push(planet);
+        this.scene.add(planet.render())
+        this.scene.add(orbit.render())
+        this.planets.push(planet)
       }
     });
   }
 
-  
+  private update() {
+    if(this.scene !== SceneController.instance.currentScene) {
+      this.scene = SceneController.instance.currentScene;
+      const object = planets.find((planet) => planet.name === SceneController.instance.currentScene.name)
+      this.initParentObject(
+        object ? new Planet(object.name, object.group, object.radius, 32, 32, object.texture, 0, 0, 0, 
+          object.rotationPeriod, 0, 0, 0, 0, 0, false, object.moons) 
+        : new Star('Sun', 'star', 10, 32, 32, sunImg)
+      )
+
+      object?.moons && this.initPlanets(object.moons)
+    }
+  }
+
   private animate() {
     if(!this.scene || !this.camera) return
 
-    this.sun?.render().rotation.y += 2 * Math.PI / 1500;
+    this.sun.render().rotation.y += 2 * Math.PI / 1500;
     this.planets.forEach(planet => planet.animate());
     this.asteroidBelt?.animate();
     this.kuiperBelt?.animate();
@@ -114,18 +126,23 @@ class Controller implements IController {
     this.renderer?.render(this.scene, this.camera);
     this.orbitControls?.update();
     this.stats?.update();
+    Controller.instance.update()
     requestAnimationFrame(this.animate);
   }
 
   public init() {
     SceneController.instance.init();
+    SceneController.instance.createScene('Sun')
+    SceneController.instance.selectScene('Sun')
     CameraController.instance.init();
     MouseController.instance.init();
     AudioController.instance.init();
     UIController.instance.init();
-    this.scene = SceneController.instance.scene;
-    this.camera = CameraController.instance.camera;
+
     this.initRenderer();
+
+    this.update()
+    this.camera = CameraController.instance.camera;
 
     if(this.renderer && this.camera) {
       this.orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -135,8 +152,8 @@ class Controller implements IController {
     this.stats = Stats();
     this.container?.appendChild(this.stats.dom);
     
-    this.initSun();
-    this.initPlanets();
+
+    this.initPlanets(planets);
 
     // Загрузка 3д моделей
     const modelLoader = new GLTFLoader();
@@ -168,7 +185,6 @@ class Controller implements IController {
       (xhr) => console.log('3D model ' + (xhr.loaded / xhr.total * 100 ) + '% loaded'),
       (err) => console.error(err)
     );
-  
   }
 
 }

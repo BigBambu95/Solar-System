@@ -11,6 +11,7 @@ import moonImg from '../textures/moon.jpg';
 import plutoImg from '../textures/pluto.jpg';
 import makemakeImg from '../textures/makemake.jpg';
 
+
 const planets: Array<ICelestialBody> = [
   {
     id: 1,
@@ -99,15 +100,63 @@ const planets: Array<ICelestialBody> = [
         group: 'moon',
         texture: moonImg,
         radius: 2,
-        distanceFromStar: 1 + 15,
+        distanceFromStar: 100 + 15,
         orbitalPeriod: 420,
         tilt: 0,
         rotationPeriod: 0,
         orbitalInclination: 0.2,
-        semimajorAxis: 1 + 15,
+        semimajorAxis: 100 + 15,
         eccentricity: 0.0013,
-        perihelion: 1 + 15,
-        aphelion: 1 + 15
+        perihelion: 100 + 15,
+        aphelion: 100 + 15
+      },
+      {
+        id: 2,
+        name: 'Europe',
+        group: 'moon',
+        texture: moonImg,
+        radius: 1.5,
+        distanceFromStar: 70 + 15,
+        orbitalPeriod: 210,
+        tilt: 0,
+        rotationPeriod: 0,
+        orbitalInclination: 1.79,
+        semimajorAxis: 70 + 15,
+        eccentricity: 0.0094,
+        perihelion: 70 + 15,
+        aphelion: 70 + 15
+      },
+      {
+        id: 3,
+        name: 'Io',
+        group: 'moon',
+        texture: moonImg,
+        radius: 1.5,
+        distanceFromStar: 42 + 15,
+        orbitalPeriod: 102,
+        tilt: 0,
+        rotationPeriod: 0,
+        orbitalInclination: 2.21,
+        semimajorAxis: 42 + 15,
+        eccentricity: 0.0041,
+        perihelion: 42 + 15,
+        aphelion: 42 + 15
+      },
+      {
+        id: 4,
+        name: 'Callisto',
+        group: 'moon',
+        texture: moonImg,
+        radius: 2,
+        distanceFromStar: 190 + 15,
+        orbitalPeriod: 996,
+        tilt: 0,
+        rotationPeriod: 0,
+        orbitalInclination: 0.192,
+        semimajorAxis: 190 + 15,
+        eccentricity: 0.0074,
+        perihelion: 190 + 15,
+        aphelion: 190 + 15
       }
     ]
   },
@@ -125,7 +174,25 @@ const planets: Array<ICelestialBody> = [
     semimajorAxis: 1429,
     eccentricity: 0.055723219,
     perihelion: 1353,
-    aphelion: 1513
+    aphelion: 1513,
+    moons: [
+      {
+        id: 1,
+        name: 'Titanium',
+        group: 'moon',
+        texture: moonImg,
+        radius: 2,
+        distanceFromStar: 122 + 12.5,
+        orbitalPeriod: 960,
+        tilt: 0,
+        rotationPeriod: 0,
+        orbitalInclination: 0.34854,
+        semimajorAxis: 122 + 12.5,
+        eccentricity: 0.0288,
+        perihelion: 122 + 12.5,
+        aphelion: 122 + 12.5,
+      }
+    ]
   },
   {
     id: 7,

@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 import CameraController from './camera-controller';
 import Controller from '../index';
+import SceneController from './scene-controller';
 
 export default class MouseController {
   private static _instance: MouseController;
-  private raycaster = null;
-  private mouse = null;
-  private intersected = null
+  private raycaster: THREE.Raycaster | null = null;
+  private mouse: THREE.Vector2 | null = null;
+  private intersected: THREE.Object3D | null = null
 
   private constructor() {
     this.onMouseMove = this.onMouseMove.bind(this);
@@ -22,6 +23,7 @@ export default class MouseController {
   }
 
   private onMouseMove(e: MouseEvent) {
+    if(!this.mouse) return
     e.preventDefault();
 
     this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -30,7 +32,8 @@ export default class MouseController {
 
   private onClick() {
     if(this.intersected) {
-      history.pushState([], this.intersected.name, `/${this.intersected.name.toLowerCase()}`)
+      SceneController.instance.createScene(this.intersected.name)
+      SceneController.instance.selectScene(this.intersected.name)
     }
   }
 
@@ -47,6 +50,7 @@ export default class MouseController {
   }
 
   public animate() {
+    if(!this.mouse || !this.raycaster) return
     this.raycaster.setFromCamera(this.mouse, CameraController.instance.camera);
 
     const intersects = this.raycaster.intersectObjects(Controller.instance.planets.map(item => item.sphere));
