@@ -12,6 +12,7 @@ export default class AudioController {
     return AudioController._instance;
   }
 
+
   init() {
     const module = import('../audio/ambient.mp3');
 

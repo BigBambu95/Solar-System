@@ -10,6 +10,7 @@ import neptuneImg from '../textures/neptune.jpg';
 import moonImg from '../textures/moon.jpg';
 import plutoImg from '../textures/pluto.jpg';
 import makemakeImg from '../textures/makemake.jpg';
+import { ICelestialBody } from '../types';
 
 
 const planets: Array<ICelestialBody> = [

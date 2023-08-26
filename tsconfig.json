@@ -3,7 +3,7 @@
 		"target": "es6",
 		"moduleResolution": "node",
 		"module": "esnext",
-		"strict": true
-	},
-	"include": [ "./src/**/*.ts" ],
+		"strict": true,
+    "jsx": "react-jsx"
+	}
 }

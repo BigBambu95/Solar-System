@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { semiminorAxis } from '../helpers';
+import { bodiesTypes } from '../types';
 
 // TODO: ВЫНести в константы
 const BODIES = {

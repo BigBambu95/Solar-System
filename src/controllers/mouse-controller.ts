@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import CameraController from './camera-controller';
-import Controller from '../index';
+import MainController from './main-controller';
 import SceneController from './scene-controller';
 
 export default class MouseController {
@@ -53,7 +53,7 @@ export default class MouseController {
     if(!this.mouse || !this.raycaster || !CameraController.instance.camera) return
     this.raycaster.setFromCamera(this.mouse, CameraController.instance.camera);
 
-    const intersects = this.raycaster.intersectObjects(Controller.instance.planets.map(item => item.sphere!));
+    const intersects = this.raycaster.intersectObjects(MainController.instance.planets.map(item => item.sphere!));
 
     if(intersects.length > 0) {
       if(this.intersected != intersects[0].object) {

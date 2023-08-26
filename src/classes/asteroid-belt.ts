@@ -1,7 +1,8 @@
 import * as THREE from 'three';
-import Controller from '../index';
+import { MainController } from '../controllers';
 import { SceneController } from '../controllers';
 import Asteroid from './asteroid';
+import { IBelt } from '../types';
 
 export default class AsteroidBelt {
   private pivot: THREE.Object3D | null = null;
@@ -38,7 +39,7 @@ export default class AsteroidBelt {
 
   public render() {
     this.pivot = new THREE.Object3D();
-    const distanceScale = Controller.instance.getDistanceScale();
+    const distanceScale = MainController.instance.getDistanceScale();
     this.createAsteroidBelt(distanceScale);
     SceneController.instance.currentScene.add(this.pivot);
   }

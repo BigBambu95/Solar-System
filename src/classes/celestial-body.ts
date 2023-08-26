@@ -1,3 +1,5 @@
+import { ICelestialBody, bodiesTypes } from "../types";
+
 abstract class CelestialBody implements ICelestialBody {
   constructor(
     public name: string,
