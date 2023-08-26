@@ -50,22 +50,26 @@ export default class MouseController {
   }
 
   public animate() {
-    if(!this.mouse || !this.raycaster) return
+    if(!this.mouse || !this.raycaster || !CameraController.instance.camera) return
     this.raycaster.setFromCamera(this.mouse, CameraController.instance.camera);
 
-    const intersects = this.raycaster.intersectObjects(Controller.instance.planets.map(item => item.sphere));
+    const intersects = this.raycaster.intersectObjects(Controller.instance.planets.map(item => item.sphere!));
 
     if(intersects.length > 0) {
       if(this.intersected != intersects[0].object) {
-          if (this.intersected) this.intersected.material.emissive.setHex(this.intersected.currentHex);
+          // if (this.intersected) {
+          //   this.intersected.material.emissive.setHex(this.intersected.currentHex);
+          // }
 
           document.body.style.cursor = 'pointer'
           this.intersected = intersects[0].object;
-          this.intersected.currentHex = this.intersected.material.emissive.getHex();
-          this.intersected.material.emissive.setHex( 0xff0000 );
+          // this.intersected.currentHex = this.intersected.material.emissive.getHex();
+          // this.intersected.material.emissive.setHex(0xff0000);
       }
     } else {
-      if (this.intersected) this.intersected.material.emissive.setHex(this.intersected.currentHex );
+      // if (this.intersected) {
+      //   this.intersected.material.emissive.setHex(this.intersected.currentHex);
+      // } 
 
       document.body.style.cursor = 'default'
       this.intersected = null;

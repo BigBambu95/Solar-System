@@ -28,7 +28,9 @@ class Label {
     
     this.mesh.position.set(position.x, position.y, position.z)
     this.mesh.scale.set(distanceToPlanet / 350, distanceToPlanet / 350, distanceToPlanet / 350);
-    this.mesh.lookAt(CameraController.instance.camera.position);
+
+    const cameraPosition = CameraController.instance.camera?.position
+    cameraPosition && this.mesh.lookAt(cameraPosition);
   }
 }
 

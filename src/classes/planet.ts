@@ -6,28 +6,32 @@ import Label from './label'
 import { Vector3 } from 'three';
 
 class Planet extends CelestialBody {
-  private sphere: THREE.Mesh | null = null;
+  private _sphere: THREE.Mesh | null = null;
   private angle = Math.floor(Math.random() * Math.PI * 2);
   private semiminorAxis = semiminorAxis(this.semimajorAxis, this.eccentricity);
   private x = 0;
   private z = 0;
   private label: Label | null = null;
 
+  get sphere() {
+    return this._sphere;
+  }
+
   render() {
     const pivot = new THREE.Object3D();
     const geometry = new THREE.SphereGeometry(this.radius, this.wSegments, this.hSegments);
     const spriteMap = new THREE.TextureLoader().load(this.texture);
     const material = new THREE.MeshStandardMaterial({ map: spriteMap, color: 0xffffff, emissive: 0xffffff, emissiveIntensity: 0 });
-    this.sphere = new THREE.Mesh(geometry, material);
-    this.sphere.name = this.name;
-    this.sphere.rotation.z = this.tilt * Math.PI / 180;
+    this._sphere = new THREE.Mesh(geometry, material);
+    this._sphere.name = this.name;
+    this._sphere.rotation.z = this.tilt * Math.PI / 180;
 
     // Название планеты
     this.label = new Label(this.name, new Vector3(this.x - 3, this.radius + 7, this.z));
     const labelMesh = this.label.render();
 
     pivot.rotateZ(this.orbitalInclination * Math.PI / 180);
-    pivot.add(this.sphere);
+    pivot.add(this._sphere);
     pivot.add(labelMesh);
     return pivot;
   }
@@ -45,17 +49,17 @@ class Planet extends CelestialBody {
     this.sphere.rotation.y += Math.PI * 2 / this.rotationPeriod;
 
     // Получение дистанции от камеры до планеты
-    const camVector = CameraController.instance.camera.position;
-    const distanceToPlanet = camVector.distanceTo(this.sphere.position);
+    const cameraPosition = CameraController.instance.camera?.position;
+    const distanceToPlanet = cameraPosition?.distanceTo(this.sphere.position);
     
     // Масштабирование и поворот названия планеты
-    this.label?.animate(distanceToPlanet, new Vector3(this.x - this.radius, this.radius + 7, this.z));
+    distanceToPlanet && this.label?.animate(distanceToPlanet, new Vector3(this.x - this.radius, this.radius + 7, this.z));
 
     // Если планету не видно она светится белым
-    if(distanceToPlanet > 1500 && this.radius < 5) {
-      this.sphere.material.emissiveIntensity = 100;
+    if(Number(distanceToPlanet) > 1500 && this.radius < 5) {
+      (this.sphere.material as any).emissiveIntensity = 100;
     } else {
-      this.sphere.material.emissiveIntensity = 0;
+      (this.sphere.material as any).emissiveIntensity = 0;
     }
   }
   

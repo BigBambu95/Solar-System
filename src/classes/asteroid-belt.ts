@@ -13,7 +13,7 @@ export default class AsteroidBelt {
     this.data = data;
   }
 
-  // Функция создания астероида
+  // Функция создания пояса астероидов
   private createAsteroidBelt(distanceScale: number) {
     const { 
       distanceFromStarMin, distanceFromStarMax, orbitalPeriodMin, 

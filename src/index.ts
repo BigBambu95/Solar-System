@@ -64,10 +64,13 @@ class Controller implements IController {
     if(!this.scene) return
 
     this.sun = object;
-    const sunMesh = this.sun.render()
-    const sunLight = new THREE.PointLight( 0xffffff, 0.85, 10000, 0.5 );
-    sunMesh.add(sunLight);
-    this.scene.add(sunMesh);
+
+    if(this.sun) {
+      const sunMesh = this.sun.render()
+      const sunLight = new THREE.PointLight( 0xffffff, 0.85, 10000, 0.5 );
+      sunMesh.add(sunLight);
+      this.scene.add(sunMesh); 
+    }
   }
 
   private initPlanets(planets: ICelestialBody[]) {
@@ -118,7 +121,7 @@ class Controller implements IController {
   private animate() {
     if(!this.scene || !this.camera) return
 
-    this.sun.render().rotation.y += 2 * Math.PI / 1500;
+    this.sun && (this.sun.render().rotation.y += 2 * Math.PI / 1500);
     this.planets.forEach(planet => planet.animate());
     this.asteroidBelt?.animate();
     this.kuiperBelt?.animate();
