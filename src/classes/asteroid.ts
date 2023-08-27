@@ -1,29 +1,29 @@
 import { randomInteger } from '../helpers';
 
 export default class Asteroid {
-  private object: THREE.Object3D;
-  private scale: number;
-  private distanceFromStarMin: number;
-  private distancefromStarMax: number;
-  private orbitalPeriodMin: number;
-  private orbitalPeriodMax: number;
-
-  private randomDistanceFromStar: number;
-  private randomOrbitalPeriod: number;
-  private angle: number = 0;
-
-  constructor(object: THREE.Object3D, orbitalPeriodMin: number, orbitalPeriodMax: number, distanceFromStarMin: number, distanceFromStarMax: number, angle: number, scale: number) {
+  private randomDistanceFromStar = 0
+  private randomOrbitalPeriod = 0
+  
+  constructor(
+    private object: THREE.Object3D, 
+    private orbitalPeriodMin: number, 
+    private orbitalPeriodMax: number, 
+    private distanceFromStarMin: number, 
+    private distanceFromStarMax: number, 
+    private angle: number, 
+    private scale: number
+  ) {
     this.object = object;
     this.orbitalPeriodMin = orbitalPeriodMin;
     this.orbitalPeriodMax = orbitalPeriodMax;
     this.distanceFromStarMin = distanceFromStarMin;
-    this.distancefromStarMax = distanceFromStarMax;
+    this.distanceFromStarMax = distanceFromStarMax;
     this.angle = angle;
     this.scale = scale;
   }
 
   public render(): THREE.Object3D {
-    this.randomDistanceFromStar = randomInteger(this.distanceFromStarMin, this.distancefromStarMax);
+    this.randomDistanceFromStar = randomInteger(this.distanceFromStarMin, this.distanceFromStarMax);
     this.randomOrbitalPeriod = randomInteger(this.orbitalPeriodMin, this.orbitalPeriodMax);
     const scale = randomInteger(1, 3) / this.scale;
     this.object.scale.set(scale, scale, scale);

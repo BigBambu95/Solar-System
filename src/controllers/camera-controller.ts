@@ -1,30 +1,30 @@
 import { PerspectiveCamera } from 'three';
 
 export default class CameraController {
-  private static instance: CameraController;
-  private camera = null;
+  private static _instance: CameraController;
+  private _camera: PerspectiveCamera | null = null;
 
   private constructor() {}
 
-  public static getInstance(): CameraController {
-    if(!CameraController.instance) {
-      CameraController.instance = new CameraController();
+  public static get instance() {
+    if(!CameraController._instance) {
+      CameraController._instance = new CameraController();
     }
 
-    return CameraController.instance;
+    return CameraController._instance;
   }
 
-  public init() {
+  init() {
     if(this.camera === null) {
-      this.camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50000);
-      this.camera.position.set(0, 200, 350);
-      this.camera.updateProjectionMatrix();
+      this._camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 50000);
+      this._camera.position.set(0, 200, 350);
+      this._camera.updateProjectionMatrix();
   
       console.log('Camera Controller initialized');
     }
   }
 
-  public getCamera(): PerspectiveCamera {
-    return this.camera;
+  get camera() {
+    return this._camera;
   }
 }

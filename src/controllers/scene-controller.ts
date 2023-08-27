@@ -2,37 +2,45 @@ import * as THREE from 'three';
 import sceneBackground from '../textures/milky_way.jpg';
 
 export default class SceneController {
-  private static instance: SceneController;
-  private scene = null;
+  private static _instance: SceneController;
+  private _scenes: Record<string, THREE.Scene> = {}
+  private _currentScene: string = ''
 
   private constructor() {}
 
-  public static getInstance(): SceneController {
-    if(!SceneController.instance) {
-      SceneController.instance = new SceneController();
+  public static get instance() {
+    if(!SceneController._instance) {
+      SceneController._instance = new SceneController();
     }
 
-    return SceneController.instance;
+    return SceneController._instance;
   }
 
-  public init(): string {
-    if(this.scene === null) {
-      this.scene = new THREE.Scene();
-      const bgTexture = new THREE.TextureLoader().load(sceneBackground);
-      bgTexture.minFilter = THREE.LinearFilter;
-      this.scene.background = bgTexture;
+  public get currentScene() {
+    return this._scenes[this._currentScene];
+  }
 
-      const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.25);
-      this.scene.add(hemisphereLight);
-  
-  
+  public init() {
       console.log('Scene Controller initialized');
       return 'success';
-    }
   }
 
-  public getScene(): THREE.Scene {
-    return this.scene;
+  public selectScene(sceneName: string) {
+    this._currentScene = sceneName
+  }
+
+  public createScene(sceneName: string) {
+    if(this._scenes[sceneName]) return 
+
+    const scene = new THREE.Scene();
+    scene.name = sceneName
+    const bgTexture = new THREE.TextureLoader().load(sceneBackground);
+    bgTexture.minFilter = THREE.LinearFilter;
+    scene.background = bgTexture;
+
+    const hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.25);
+    scene.add(hemisphereLight);
+    this._scenes[sceneName] = scene
   }
 
 }

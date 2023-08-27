@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		"target": "es6",
 		"moduleResolution": "node",
-		"module": "esnext"
-	},
-	"include": [ "./src/**/*.ts" ],
+		"module": "esnext",
+		"strict": true,
+    "jsx": "react-jsx"
+	}
 }

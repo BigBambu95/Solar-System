@@ -1,11 +1,5 @@
-import SceneController from './scene-controller';
-import AudioController from './audio-controller';
-import MouseController from './mouse-controller';
-import CameraController from './camera-controller';
-
-export {
-  SceneController,
-  AudioController,
-  MouseController,
-  CameraController
-}
+export { default as MainController } from './main-controller'
+export { default as SceneController } from './scene-controller'
+export { default as AudioController } from './audio-controller'
+export { default as MouseController } from './mouse-controller'
+export { default as CameraController } from './camera-controller'
