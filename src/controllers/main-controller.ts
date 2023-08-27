@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-import { SceneController, AudioController, MouseController, CameraController } from '../controllers';
+import { SceneController, MouseController, CameraController, AudioController } from '../controllers';
 
 import { planets, kuiperBelt, asteroidBelt } from '../classes/data';
 
@@ -124,6 +124,7 @@ class Controller implements IController {
     this.asteroidBelt?.animate();
     this.kuiperBelt?.animate();
     MouseController.instance.animate();
+    AudioController.instance.update();
     this.renderer?.render(this.scene, this.camera);
     this.orbitControls?.update();
     this.stats?.update();

@@ -40,3 +40,7 @@ export interface IBelt {
 }
 
 export type bodiesTypes = 'planet' | 'dwarf-planet' | 'star' | 'moon';
+
+export interface IStore {
+  isAudioPaused: boolean;
+}
